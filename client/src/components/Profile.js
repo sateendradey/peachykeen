@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
-import { withRouter } from 'react-router-dom';
 
 const SUCCESSMESSAGE = "Success";
 
@@ -81,7 +80,7 @@ class Profile extends Component {
         return (
           <div className="App">
           <section id= "signup">
-          <h2>Signup</h2>
+          <h2>Sign up</h2>
           <div class="form-group">
           <Alert color="success" isOpen={this.state.isSuccess} toggle={this.onDismissSuccess}>
           User created successfully! <a href ="Login"> Login here </a>

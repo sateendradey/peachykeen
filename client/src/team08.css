@@ -13,7 +13,12 @@ body{
 /* We are using 100% of whatever the viewport renders. This makes the webpage truly responsive. Also, our design wants to span the entire page that's available for the header
 footer and images. To determine the percentages we started with the value 1140px*/
 	width:100%;
+	height: 100%;
 	line-height: 1.5;
+}
+
+div{
+	height: 100%;
 }
 
 
@@ -46,8 +51,9 @@ footer and images. To determine the percentages we started with the value 1140px
 }
 @media (max-width: 650px) {
 	.logo img{
-		max-height: 70%;
-		margin-top: 10%;
+		-webkit-appearance: none;
+		max-height: 5vh;
+		margin-top: 0.5vh;
 	}
 	#navbar{
 		display: none !important;
@@ -181,8 +187,10 @@ header input[type=text] {
 
 
 .logo img{
+	-webkit-appearance: none;
 /* so that it scales as needed but never gets too big or lose it's aspect ratio*/
-	max-height: 90%;
+	max-height: 10vh;
+	margin-top: .2vh;
 	background-color: #3b43cc;
   image-rendring: crisp-edges;
 }
@@ -222,8 +230,9 @@ header input[type=text] {
 }
 
 #landing_image img{
+	-webkit-appearance: none;
 	width: 100%; /*needs to cover the entire width of the screen*/
-	height: 55.6230589875%; /* Header covers 10% of the screen, So for the remainder 90%, this value presents the golden ratio! (90/55.62 ~ 1.61) */
+	height: 55.6230589875vh; /* Header covers 10% of the screen, So for the remainder 90%, this value presents the golden ratio! (90/55.62 ~ 1.61) */
 /* Using the following tags to crop the image so interesting parts are only shown, also using filters to make it match our color scheme */
 	object-fit: cover;
 	object-position: 10% 40%;
