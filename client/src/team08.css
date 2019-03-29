@@ -16,6 +16,8 @@ footer and images. To determine the percentages we started with the value 1140px
 	line-height: 1.5;
 }
 
+
+
 /*Using media query to adjust the look of the navigation bar based on screen width */
 @media (min-width: 651px){
 	/* This holds the entire navigation box. The navigation is a dropdown box of list that appear when we hover on the three line icon */
@@ -297,11 +299,11 @@ h2{
 }
 
 #signup div{
-	font-family: "Inconsolata";
 	margin: 1.5%;
-	text-align: center;
-	line-height:1;
-	padding:.25%;
+}
+
+#signup button{
+	margin-left: 1%;
 }
 
 
