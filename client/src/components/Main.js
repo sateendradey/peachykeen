@@ -2,29 +2,35 @@ import React, { Component } from 'react';
 
 class Main extends Component {
 	
-	
 	state = {
-		restaurants: []
+		restaurants: [],
+		isLoading: false,
 	};
-	
-	 listHTML = '';
-	
-	fetch('/restaurants')
-		.then(res => res.json())
-		.then(restaurants => this.setState({ restaurants }));
-		.then(res.forEach(function(item) {
-			listHTML += '<li>' + item.name + '</li>';
-		});)
-		/*
-	document.getElementById("restaurants-list").innerHTML = '<ul>' + listHTML + '</ul>';
-	 */ 
+	//function to contain the fetch
+	componentDidMount() {
+		//sets isLoading to true if we want to display some graphics during loading
+		this.setState({ isLoading: true});
+		//fetch pulls all restaurant data into an array
+		fetch('/restaurants')
+		.then(res =>res.json())
+		.then(resArray=>resArray.forEach(function(item,listHTML=[]) {
+			//concatenates the values together for each value in our db
+			listHTML =   item.Name.toString() + ', '+ item.Mood.toString()+ ', '+ item.Catering.toString() ;
+			//adds each array item into a HTML list item
+			document.getElementById("restaurants-list").innerHTML += '<li>' + listHTML + ' catering </li>';
+		}))
+		this.setState({ isLoading: false});
+	}
+ 
   render() {
     return (
 	<React.Fragment>
+	<h1> All Restaurants!</h1>
       <div className="App">
-		Main
       </div>
-	  <div id="restaurants-list">
+	  <div >
+		<ol id="restaurants-list">
+		</ol>
 	  </div>
 	</React.Fragment>
     );
