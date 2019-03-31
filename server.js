@@ -38,6 +38,14 @@ function getProfile(email, callback) {
   });
 }
 
+app.get('/restaurants',function (req, res){
+  var dbo = db.db(DATABASE_NAME);
+  dbo.collection(RESTAURANT_COLLECTION).find({}).toArray(function(err, result) {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
 //to create users profile
 app.post('/profile', function (req, res) {
   const new_prof = {
