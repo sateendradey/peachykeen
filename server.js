@@ -10,6 +10,7 @@ const ObjectId = require("mongodb").ObjectID;
 const CONNECTION_URL = "mongodb+srv://jacob:jacob@cluster0-qwsrk.mongodb.net/test?retryWrites=true";
 const DATABASE_NAME = "PeachyKeen";
 const USER_COLLECTION = "User";
+const RESTAURANT_COLLECTION = "Restaurants";
 var db;
 const client = new MongoClient(CONNECTION_URL, { useNewUrlParser: true });
 
