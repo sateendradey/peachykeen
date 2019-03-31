@@ -90,7 +90,10 @@ This will stop working when the text spills the second line, but that's at aroun
   		margin-left: auto;
 		display: block;
 	}
-
+	
+	*{
+		padding: 0.25% 0;
+	}
 }
 /* This is the actual list of links. */
 nav{
@@ -257,6 +260,15 @@ header input[type=text] {
 #signup input{
 	width: 50%;
 	margin: 0 auto;
+}
+
+@media (min-width: 651px){
+     #signup input{
+	width: 70%;
+	}
+     #signup h2{
+	padding: 4% 0%;
+	}
 }
 
 button {
