@@ -81,35 +81,35 @@ class Profile extends Component {
           <div className="App">
           <section id= "signup">
           <h2>Sign up</h2>
-          <div class="form-group">
+          <div className="form-group">
           <Alert color="success" isOpen={this.state.isSuccess} toggle={this.onDismissSuccess}>
           User created successfully! <a href ="Login"> Login here </a>
           </Alert>
           <form onSubmit={this.handleSubmit}>
           <div>
-          <input class="form-control" type="text" placeholder="Name" value={this.state.name} autocomplete="name"
+          <input className="form-control" type="text" placeholder="Name" value={this.state.name} autoComplete="name"
           onChange={e => this.setState({ name: e.target.value })} required/>
           </div>
           <div>
-          <input class="form-control" type="email" placeholder="Email" value={this.state.email} autocomplete="email"
+          <input className="form-control" type="email" placeholder="Email" value={this.state.email} autoComplete="email"
           onChange={e => this.setState({ email: e.target.value })} required/>
           </div>
           <div>
-          <input class="form-control" type="password" placeholder="Password" value={this.state.password} autocomplete="new-password"
+          <input className="form-control" type="password" placeholder="Password" value={this.state.password} autoComplete="new-password"
           onChange={e => this.setState({ password: e.target.value })} suggested="new-password" required/>
           </div>
           <div>
-          <input class="form-control" type="password" placeholder="Repeat password" value={this.state.reppassword} ref={this.repPass}
+          <input className="form-control" type="password" placeholder="Repeat password" value={this.state.reppassword} ref={this.repPass}
           onChange={this.validatePassword} required/>
           </div>
           <div>
           <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
           </div>
-          <div class="button_pair">
-          <button type="button" class="btn btn-danger" onClick={this.clearState} >Cancel</button>
-          <button type="submit" class="btn btn-success">Sign Up</button>
+          <div className="button_pair">
+          <button type="button" className="btn btn-danger" onClick={this.clearState} >Cancel</button>
+          <button type="submit" className="btn btn-success">Sign Up</button>
           </div>
-          <button type="button" class="btn btn-info" onClick={this.routeChange}>Already Have A Login?</button>
+          <button type="button" className="btn btn-info" onClick={this.routeChange}>Already Have A Login?</button>
           </form>
           </div>
           </section>

@@ -22,8 +22,12 @@ app.get('/profile/:email', function (req, res) {
     //request.query : for query string params
     //res.send(getProfile(prof_id));
     getProfile(prof_id, function(response){
-	   console.log(response);
+      console.log(response);
+      if (response)
         res.send(response);
+      else {
+        res.status(404).send("Not Found");
+      }
     });
 });
 
@@ -31,11 +35,13 @@ function getProfile(email, callback) {
   var res;
   var dbo = db.db(DATABASE_NAME);
   var searchTerm = { email: email };
-  console.log(searchTerm);
-  dbo.collection(USER_COLLECTION).find(searchTerm).toArray(function(err, result) {
+  dbo.collection(USER_COLLECTION).findOne(searchTerm, function(err, result) {
     if (err) throw err;
+    else if (!result)
+      res = null;
+    else
       res =  result;
-    return callback(res[0]);
+    return callback(res);
   });
 }
 
