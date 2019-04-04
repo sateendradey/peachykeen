@@ -1,20 +1,22 @@
 import * as React from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Profile from '../components/Profile';
-import Landing from '../components/Landing';
 import Main from '../components/Main';
 import Login from '../components/Login';
 import About from '../components/About';
+import AppliedRoute from "../components/AppliedRoute";
+import NotFound from "../components/NotFound";
 
 
-const Routes = () => (
-  <div>
-    <Route path="/" component={Landing} />
-    <Route exact path="/" component={Main} />
-    <Route exact path="/profile" component={Profile} />
-    <Route exact path="/login" component={Login} />
-    <Route exact path="/about" component={About} />
-  </div>
+const Routes = ({ childProps }) => (
+  <Switch>
+    <AppliedRoute exact path="/" exact component={Main} props={childProps} />
+    <AppliedRoute exact path="/main" exact component={Main} props={childProps} />
+    <AppliedRoute exact path="/profile" exact component={Profile} props={childProps} />
+    <AppliedRoute exact path="/login" exact component={Login} props={childProps} />
+    <AppliedRoute exact path="/about" exact component={About} props={childProps} />
+    <Route component={NotFound} />
+  </Switch>
 );
 
 export default Routes;

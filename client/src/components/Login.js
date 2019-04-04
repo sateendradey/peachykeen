@@ -23,7 +23,7 @@ class Login extends Component {
   }
 
   routeChange() {
-    let path = `Main`;
+    let path = `main`;
     this.props.history.push(path);
   }
 
@@ -46,6 +46,7 @@ class Login extends Component {
         this.setState({ message: "Login successful! Redirecting now!",
                             isSuccess: true,
                             color: 'success'});
+        this.props.userHasAuthenticated(true);
         this.timeoutHandle = setTimeout(()=>{
           this.routeChange();
         }, 5000);
