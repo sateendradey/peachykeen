@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import logo from './img/curly-peach.png'
+import logo from './img/Peach-Logo.png'
 import Router from './routes';
 import './team08.css';
 
@@ -76,7 +76,7 @@ class App extends Component {
             ? <a className="nav-link men-right" href="#" onClick={this.handleLogoff}><i className="fas fa-user-plus"></i>{'\u00A0'}Logout</a>
             : <React.Fragment>
               <a className="nav-link men-right" href="/Login"><i className="fas fa-sign-in-alt"></i>{'\u00A0'}Login</a>
-              <a className="nav-link men-right signup-text" href="/Profile"><i className="fas fa-user-plus"></i>{'\u00A0'}Sign up</a>
+              <a className="nav-link men-right signup-text" href="/Signup"><i className="fas fa-user-plus"></i>{'\u00A0'}Sign up</a>
               </React.Fragment>
           }
           </div>

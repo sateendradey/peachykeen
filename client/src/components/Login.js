@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
+import './styles/forms.css';
+import './styles/mainstyle.css';
+import signin_img from './img/signin-image.jpg';
 
 class Login extends Component {
   state = {
@@ -34,8 +37,8 @@ class Login extends Component {
     const response = await fetch(request);
     if (response.status === 404){
       await this.setState({ message: "We could not find the email in our records!",
-                            isSuccess: true,
-                            color: 'danger'});
+      isSuccess: true,
+      color: 'danger'});
     }
     else{
       const body = await response.json();
@@ -44,8 +47,8 @@ class Login extends Component {
         sessionStorage.setItem("isAuthenticated", true);
         sessionStorage.setItem("Email", body.email);
         this.setState({ message: "Login successful! Redirecting now!",
-                            isSuccess: true,
-                            color: 'success'});
+        isSuccess: true,
+        color: 'success'});
         this.props.userHasAuthenticated(true);
         this.timeoutHandle = setTimeout(()=>{
           this.routeChange();
@@ -53,8 +56,8 @@ class Login extends Component {
       }
       else{
         await this.setState({ message: "The password you have entered does not match with what we have on file!",
-                              isSuccess: true,
-                              color: 'danger'});
+        isSuccess: true,
+        color: 'danger'});
       }
     }
 
@@ -63,23 +66,35 @@ class Login extends Component {
   render() {
     return (
       <div className="App">
-      <section id= "signup">
-      <h2>Login</h2>
-      <div className="form-group">
+      <section className="sign-in">
+      <div className="container">
       <Alert color={this.state.color} isOpen={this.state.isSuccess} toggle={this.onDismissSuccess}>
       {this.state.message}
       </Alert>
-      <form onSubmit={this.handleSubmit}>
-      <div>
-      <input className="form-control" type="email" placeholder="Email" value={this.state.email} autoComplete="email"
+      <div className="signin-content">
+      <div className="signin-image">
+      <figure><img src={signin_img} alt="sign up image"/></figure>
+      <a href="/Signup" className="signup-image-link">Create an account</a>
+      </div>
+      <div className="signin-form">
+      <h3 className="form-title">Login</h3>
+      <form className="register-form" id="login-form" onSubmit={this.handleSubmit}>
+      <div className="form-group">
+      <label for="email"><i className="fas fa-user-alt"></i></label>
+      <input name = "email" type="email" placeholder="Email" value={this.state.email} autoComplete="email"
       onChange={e => this.setState({ email: e.target.value })} required/>
       </div>
-      <div>
-      <input className="form-control" type="password" placeholder="Password" value={this.state.password} autoComplete="current-password"
+      <div className="form-group">
+      <label for="password"><i className="fas fa-key"></i></label>
+      <input name="password" type="password" placeholder="Password" value={this.state.password} autoComplete="current-password"
       onChange={e => this.setState({ password: e.target.value })} required/>
       </div>
-      <button type="submit" className="btn btn-success">Login</button>
+      <div className="form-group form-button">
+      <input type="submit" name="signin" id="signin" className="form-submit" value="Log in"/>
+      </div>
       </form>
+      </div>
+      </div>
       </div>
       </section>
       </div>
