@@ -49,7 +49,7 @@ class Login extends Component {
         this.props.userHasAuthenticated(true);
         this.timeoutHandle = setTimeout(()=>{
           this.routeChange();
-        }, 5000);
+        }, 2000);
       }
       else{
         await this.setState({ message: "The password you have entered does not match with what we have on file!",

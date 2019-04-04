@@ -10,9 +10,9 @@ class NotFound extends Component {
       <section id= "signup">
       <h2>Sorry!</h2>
       <div>
-      <img class="oop" src={four}/>
-      <img class="oop" src={curly_peach}/>
-      <img class="oop" src={four}/>
+      <img class="oop" src={four} alt="404 Error"/>
+      <img class="oop" src={curly_peach} alt="404 Error"/>
+      <img class="oop" src={four} alt="404 Error"/>
       </div>
       <div id="announcement" class="jumbotron">
       Oops! Seems like you're lost!
