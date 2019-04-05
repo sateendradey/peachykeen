@@ -60,6 +60,7 @@ class Signup extends Component {
 
     handleSubmit = async e => {
       e.preventDefault();
+      var today = new Date();
       const response = await fetch('/profile', {
         method: 'POST',
         headers: {
@@ -68,7 +69,8 @@ class Signup extends Component {
         body: JSON.stringify({
           name: this.state.name, // name
           password:this.state.password, // password
-          email: this.state.email, }),
+          email: this.state.email,
+          date: today}),
         });
         const body = await response.text();
         if (body === SUCCESSMESSAGE){
@@ -118,7 +120,7 @@ class Signup extends Component {
           </form>
           </div>
           <div className="signup-image">
-          <figure><img src={signup_img} alt="sing up image"/></figure>
+          <figure><img src={signup_img} alt="sign up"/></figure>
           <a href="/Login" className="signup-image-link">I am a already a member</a>
           </div>
           </div>

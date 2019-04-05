@@ -54,7 +54,7 @@ class App extends Component {
           <img src={logo} width="30" height="30" className="d-inline-block align-top" alt="Ms. Peaches"/>
           <span className="brand-text">Peachy Keen</span>
           </a>
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <button className="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
           </button>
 

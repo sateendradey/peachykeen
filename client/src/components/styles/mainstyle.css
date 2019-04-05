@@ -48,7 +48,7 @@ figure {
 	margin: 0 auto;
 	background: #f8f8f8;
 }
-.profile-details,.profile-reviews  {
+.profile-details{
   width: 60%;
   background: #fff;
   margin: 0 auto;
@@ -65,18 +65,31 @@ figure {
 }
 
 .profile-reviews{
-	margin-top: 1vh;
+	margin: 2vh auto;
+	padding: 2vh;
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 401px) {
   .profile-details,.profile-reviews {
-    max-width: 60%;
+    width: 80%;
+	}
+	.profile-picture{
+		max-width: 200px;
+		max-height: 200px;
+	}
+}
+
+@media screen and (max-width: 400px) {
+	.profile-details,.profile-reviews {
+    width: 80%;
+	}
+	.profile-picture{
+		max-width: 100px;
+		max-height: 100px;
 	}
 }
 
 .profile-picture{
-	max-width: 200px;
-	max-height: 200px;
 	border-radius: 50%;
 	box-shadow: 1px 3px 10px grey;
 }
@@ -86,4 +99,30 @@ figure {
 
 .profile-content{
 	margin-top: 2.5vh;
+}
+
+.descript{
+	text-align: center;
+	padding: 1em;
+	display: block;
+}
+
+h4{
+		line-height: 1.2;
+    margin: 0;
+    padding: 0;
+    color: #222;
+    font-family: Poppins;
+    font-size: 2em;
+}
+
+.peach-score{
+	height: 1em;
+	line-height: 0.8em;
+	margin-bottom: 1vh;
+}
+
+.em-peach{
+	height: 1.5em;
+	margin-right: 0.5em;
 }
