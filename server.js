@@ -17,7 +17,7 @@ const client = new MongoClient(CONNECTION_URL, { useNewUrlParser: true });
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/profile/:email', function (req, res) {
+app.get('/profiles/:email', function (req, res) {
     var prof_id = req.params.email;
     //request.query : for query string params
     //res.send(getProfile(prof_id));
@@ -59,6 +59,7 @@ app.post('/profile', function (req, res) {
        name: req.body.name, // name
        password:req.body.password, // password
        email: req.body.email, // email
+       date: req.body.date
   };
 
   AddProfile(new_prof,function(response){

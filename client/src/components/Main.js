@@ -4,6 +4,7 @@ class Main extends Component {
 	
 	state = {
 		restaurants: [],
+		selectedRestaurant: '',
 		isLoading: false,
 	};
 	//function to contain the fetch
@@ -50,8 +51,7 @@ class Main extends Component {
     return (
 	<React.Fragment>
 	<h1> All Restaurants!</h1>
-      <div className="App">
-		
+      <div className="App">		
       </div>
 	  <div>
 		<form>

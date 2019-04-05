@@ -33,7 +33,7 @@ class Login extends Component {
   handleSubmit = async e => {
     this.setState({ isSuccess: false });
     e.preventDefault();
-    const request = '/profile/' + this.state.email;
+    const request = '/profiles/' + this.state.email;
     const response = await fetch(request);
     if (response.status === 404){
       await this.setState({ message: "We could not find the email in our records!",
@@ -49,10 +49,10 @@ class Login extends Component {
         this.setState({ message: "Login successful! Redirecting now!",
         isSuccess: true,
         color: 'success'});
-        this.props.userHasAuthenticated(true);
         this.timeoutHandle = setTimeout(()=>{
-          this.routeChange();
+          this.props.userHasAuthenticated(true);
         }, 2000);
+
       }
       else{
         await this.setState({ message: "The password you have entered does not match with what we have on file!",
@@ -73,7 +73,7 @@ class Login extends Component {
       </Alert>
       <div className="signin-content">
       <div className="signin-image">
-      <figure><img src={signin_img} alt="sign up image"/></figure>
+      <figure><img src={signin_img} alt="Login Man"/></figure>
       <a href="/Signup" className="signup-image-link">Create an account</a>
       </div>
       <div className="signin-form">

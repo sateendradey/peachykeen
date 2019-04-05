@@ -174,7 +174,7 @@ input[type=radio] {
   clear: both; }
 
 .container {
-  width: 900px;
+  width: 60%;
   background: #fff;
   margin: 0 auto;
   box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
@@ -492,10 +492,7 @@ label.valid {
   margin-top: 10px; }
 
 
-@media screen and (min-width: 1024px) {
-  .container {
-    max-width: 60%; } }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 950px) {
   .signup-content, .signin-content {
     flex-direction: column;
     -moz-flex-direction: column;
@@ -550,7 +547,7 @@ label.valid {
 
   .form-title {
     text-align: center; } }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 650px) {
   .social-login {
     flex-direction: column;
     -moz-flex-direction: column;

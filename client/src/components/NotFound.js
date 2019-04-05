@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import curly_peach from "./img/curly-peach.png"
 import four from "./img/orange4.png"
+import './styles/mainstyle.css';
 
 class NotFound extends Component {
 
@@ -8,7 +9,6 @@ class NotFound extends Component {
     return (
       <div className="App">
       <section id= "signup">
-      <h2>Sorry!</h2>
       <div>
       <img class="oop" src={four} alt="404 Error"/>
       <img class="oop" src={curly_peach} alt="404 Error"/>
