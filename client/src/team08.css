@@ -327,3 +327,13 @@ footer{
 	color:#1EB345 !important;
 	font-weight: bolder;
 }
+
+.welcome-text{
+	color:white !important;
+}
+
+.avatar{
+	height: 28px;
+	width: 28px;
+	border-radius: 50px;
+}

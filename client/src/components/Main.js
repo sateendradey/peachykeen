@@ -4,6 +4,7 @@ class Main extends Component {
 
 	state = {
 		restaurants: [],
+		selectedRestaurant: '',
 		isLoading: false,
 	};
 	//function to contain the fetch
@@ -52,8 +53,8 @@ class Main extends Component {
 			<h1> All Restaurants!</h1>
 			<div>
 			<form>
-			<select id="restaurants-name" onChange={this.pickedRestaurant}>
-			<option value=""  selected>Select your option</option>
+			<select id="restaurants-name" onChange={this.pickedRestaurant} selected>
+			<option value="" selected>Select your option</option>
 			</select>
 			</form>
 			<details id="restaurantDeets" style={{width:'50%'}}>

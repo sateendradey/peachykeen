@@ -42,3 +42,48 @@ figure {
 .label-agree-term{
 	font-size: 0.8em;
 }
+
+.profile{
+	padding-top: 55px;
+	margin: 0 auto;
+	background: #f8f8f8;
+}
+.profile-details,.profile-reviews  {
+  width: 60%;
+  background: #fff;
+  margin: 0 auto;
+  box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+  -o-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+  -ms-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -o-border-radius: 20px;
+  -ms-border-radius: 20px;
+}
+
+.profile-reviews{
+	margin-top: 1vh;
+}
+
+@media screen and (min-width: 1024px) {
+  .profile-details,.profile-reviews {
+    max-width: 60%;
+	}
+}
+
+.profile-picture{
+	max-width: 200px;
+	max-height: 200px;
+	border-radius: 50%;
+	box-shadow: 1px 3px 10px grey;
+}
+.profile-values{
+	width: 90%;
+}
+
+.profile-content{
+	margin-top: 2.5vh;
+}

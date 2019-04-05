@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import logo from './img/Peach-Logo.png'
+import avatar from './img/user-profile.jpg'
 import Router from './routes';
 import './team08.css';
 
@@ -27,19 +28,16 @@ class App extends Component {
 
     componentDidMount(){
       var isAuthenticated = sessionStorage.getItem("isAuthenticated");
-      if (isAuthenticated){
-        this.userHasAuthenticated();
-      }
+      this.userHasAuthenticated(isAuthenticated);
     }
 
     handleLogoff = async e => {
       e.preventDefault();
+      this.userHasAuthenticated(false);
       this.setState({isAuthenticated:false,
         name: '',
         email: ''});
-        sessionStorage.setItem("isAuthenticated", false);
-        sessionStorage.setItem("UserName", '');
-        sessionStorage.setItem("Email", '');
+      sessionStorage.clear();
       };
 
       render() {
@@ -48,6 +46,7 @@ class App extends Component {
           userHasAuthenticated: this.userHasAuthenticated
         };
 
+        var profile = "/Profile/" + this.state.email;
         return (
           <div className="App">
           <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -71,9 +70,17 @@ class App extends Component {
           About us
           </a>
           </li>
+          <li className="nav-item">
+          <a className="nav-link men" href={profile} aria-label="Profile">
+          Profile
+          </a>
+          </li>
           </ul>
           {this.state.isAuthenticated
-            ? <a className="nav-link men-right" href="#" onClick={this.handleLogoff}><i className="fas fa-user-plus"></i>{'\u00A0'}Logout</a>
+            ? <React.Fragment>
+              <a className="nav-link men-right welcome-text" href={profile}><img className="avatar" src={avatar} alt="user avatar"/>{'\u00A0'}Welcome {this.state.name}!</a>
+              <a className="nav-link men-right" href="#" onClick={this.handleLogoff}><i className="fas fa-user-plus"></i>{'\u00A0'}Logout</a>
+              </React.Fragment>
             : <React.Fragment>
               <a className="nav-link men-right" href="/Login"><i className="fas fa-sign-in-alt"></i>{'\u00A0'}Login</a>
               <a className="nav-link men-right signup-text" href="/Signup"><i className="fas fa-user-plus"></i>{'\u00A0'}Sign up</a>
