@@ -50,26 +50,30 @@ class Main extends Component {
   render() {
     return (
 	<React.Fragment>
-	<h1> All Restaurants!</h1>
-      <div className="App">		
-      </div>
-	  <div>
-		<form>
-			<select id="restaurants-name" onChange={this.pickedRestaurant}>
-			<option value=""  selected>Select your option</option>
+	<div class = "App">
+	 <div class= "container">
+	<div class="restaurant-content">
+		<form style = {{width:'100%', textAlign: 'center'}}>
+		<h1 class="restaurant-header"> All Restaurants!</h1>
+			<select id="restaurants-name" onChange={this.pickedRestaurant} style = {{width:'100%', textAlign: 'center'}}>
+			<option value="" selected>Select A Restaurant</option>
 			</select>
-		</form>
-		<details id="restaurantDeets" style={{width:'50%'}}>
-			<summary id="restaurantName" style={{width:'50%'}} hidden='true'></summary>
-			<p id="restaurantMood" style={{width:'50%'}}></p>
-			<p id="restaurantRating" style={{width:'50%'}}></p>
-			<p id="restaurantReviews" style={{width:'50%'}}></p>
-				<ol id="restaurantReviewsText"style={{width:'50%'}}></ol>
-			<address id="restaurantAddress" style={{width:'50%'}}></address>
+		
+		<details id="restaurantDeets">
+			<summary id="restaurantName" hidden='true'></summary>
+			<p id="restaurantMood"></p>
+			<p id="restaurantRating"></p>
+			<p id="restaurantReviews"></p>
+				<ul id="restaurantReviewsText" style= {{listStyleType:'none'}} ></ul>
+			<address id="restaurantAddress"></address>
 			
 			
 		</details>
-	  </div>
+		</form>
+
+	</div>
+	</div>
+	</div>
 	</React.Fragment>
     );
   }
