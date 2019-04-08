@@ -39,8 +39,9 @@ function getProfile(email, callback) {
     if (err) throw err;
     else if (!result)
       res = null;
-    else
+    else{
       res =  result;
+    }
     return callback(res);
   });
 }
@@ -59,7 +60,9 @@ app.post('/profile', function (req, res) {
        name: req.body.name, // name
        password:req.body.password, // password
        email: req.body.email, // email
-       date: req.body.date
+       date: req.body.date,
+       reviews: req.body.reviews,
+       reserve: req.body.reserve
   };
 
   AddProfile(new_prof,function(response){

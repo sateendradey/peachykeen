@@ -70,7 +70,9 @@ class Signup extends Component {
           name: this.state.name, // name
           password:this.state.password, // password
           email: this.state.email,
-          date: today}),
+          date: today,
+          reserve: [],
+          reviews: []}),
         });
         const body = await response.text();
         if (body === SUCCESSMESSAGE){

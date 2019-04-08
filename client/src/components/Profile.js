@@ -10,6 +10,8 @@ class Profile extends Component {
     email: '',
     message: '',
     score: 0,
+    restaurantReviews: [],
+    reservations: [],
     since: '',
     isError: false,
     color: 'danger'
@@ -53,12 +55,44 @@ class Profile extends Component {
     else{
       const body = await response.json();
       var sinceDate = new Date(body.date).toDateString();
-      await this.setState({ score: 0,
-                            since: sinceDate,});
+      console.log(body);
+      await this.setState({ since: sinceDate,
+                            restaurantReviews: Array.from(body.reviews),
+                            reservations: Array.from(body.reserve)});
+      var score = this.state.restaurantReviews.length * 10 + this.state.reservations.length * 15;
+      await this.setState({ score: score});
   }
 }
 
   render() {
+    var RestReviews = this.state.restaurantReviews ?
+    this.state.restaurantReviews.map(function(review){
+      return <div className="profile-reviews">
+      <div className="row">
+      Restaurant Name: {review.name}
+      </div>
+      <div className="row">
+      Review Date: {new Date(review.date).toDateString()}
+      </div>
+      <div className="row">
+      Review: {review.review}
+      </div>
+      </div>
+    })
+    : "";
+    var RestReserve =
+    this.state.reservations ?
+    this.state.reservations.map(function(reservation){
+      return <div className="profile-reviews">
+      <div className="row">
+      Restaurant Name: {reservation.name}
+      </div>
+      <div className="row">
+      Date: {new Date(reservation.date).toDateString()}
+      </div>
+      </div>
+    })
+    : "";
     return (
       <div className="App">
       <section className="profile">
@@ -82,17 +116,10 @@ class Profile extends Component {
       </div>
       </div>
       <div className="profile-details">
-      <div className="profile-reviews">
-      <div className="row">
-      Restaurant Name:
+        {RestReserve}
       </div>
-      <div className="row">
-      Review Date:
-      </div>
-      <div className="row">
-      Review:
-      </div>
-      </div>
+      <div className="profile-details">
+        {RestReviews}
       </div>
       </section>
       </div>
