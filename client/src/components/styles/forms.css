@@ -1,5 +1,5 @@
 /* @extend display-flex; */
-display-flex, .display-flex, .display-flex-center, .signup-content, .signin-content, .social-login, .socials {
+display-flex, .display-flex, .display-flex-center, .signup-content, .signin-content, .social-login, .socials, .restaurant-content {
   display: flex;
   display: -webkit-flex; }
 
@@ -133,6 +133,15 @@ input, select, textarea {
   -webkit-appearance: unset !important;
   -o-appearance: unset !important;
   -ms-appearance: unset !important; }
+  
+  /*HERE*/
+select{
+  outline: none;
+  appearance: menulist !important;
+  -moz-appearance: menulist !important;
+  -webkit-appearance: menulist !important;
+  -o-appearance: menulist !important;
+  -ms-appearance: menulist !important; }
 
 input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   appearance: none !important;
@@ -493,7 +502,7 @@ label.valid {
 
 
 @media screen and (max-width: 950px) {
-  .signup-content, .signin-content {
+  .signup-content, .signin-content, .restaurant-content {
     flex-direction: column;
     -moz-flex-direction: column;
     -webkit-flex-direction: column;
@@ -558,5 +567,8 @@ label.valid {
   .social-label {
     margin-right: 0px;
     margin-bottom: 10px; } }
+
+.restaurant-content {
+  padding: 75px 0; }
 
 /*# sourceMappingURL=style.css.map */
