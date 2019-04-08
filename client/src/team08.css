@@ -73,6 +73,16 @@ section {
 
 #restaurants {text-align:center;}
 
+.restaurant-header {
+    line-height: 1.66;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    color: #222;
+    font-family: Poppins;
+    font-size: 36px;
+    margin-bottom: 33px;
+}
 
 
 #landing_image img{
