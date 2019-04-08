@@ -3,6 +3,7 @@ import { Alert } from 'reactstrap';
 import './styles/forms.css';
 import './styles/mainstyle.css';
 import signin_img from './img/signin-image.jpg';
+import LoaderButton from "./LoaderButton";
 
 class Login extends Component {
   state = {
@@ -11,7 +12,8 @@ class Login extends Component {
     message: '',
     isValid: false,
     isSuccess: false,
-    color: 'danger'
+    color: 'danger',
+    isLoading: false
   }
 
 
@@ -31,7 +33,8 @@ class Login extends Component {
   }
 
   handleSubmit = async e => {
-    this.setState({ isSuccess: false });
+    this.setState({ isSuccess: false,
+                    isLoading: true});
     e.preventDefault();
     const request = '/profiles/' + this.state.email;
     const response = await fetch(request);
@@ -39,6 +42,7 @@ class Login extends Component {
       await this.setState({ message: "We could not find the email in our records!",
       isSuccess: true,
       color: 'danger'});
+      this.setState({ isLoading: false });
     }
     else{
       const body = await response.json();
@@ -50,6 +54,7 @@ class Login extends Component {
         isSuccess: true,
         color: 'success'});
         this.timeoutHandle = setTimeout(()=>{
+          this.setState({ isLoading: false });
           this.props.userHasAuthenticated(true);
         }, 2000);
 
@@ -58,8 +63,10 @@ class Login extends Component {
         await this.setState({ message: "The password you have entered does not match with what we have on file!",
         isSuccess: true,
         color: 'danger'});
+        this.setState({ isLoading: false });
       }
     }
+
 
 
   }
@@ -90,7 +97,14 @@ class Login extends Component {
       onChange={e => this.setState({ password: e.target.value })} required/>
       </div>
       <div className="form-group form-button">
-      <input type="submit" name="signin" id="signin" className="form-submit" value="Log in"/>
+      <LoaderButton
+      block
+      bsSize="large"
+      type="submit"
+      isLoading={this.state.isLoading}
+      text="Login"
+      loadingText=" Logging in…"
+      />
       </div>
       </form>
       </div>

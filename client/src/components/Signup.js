@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
 import signup_img from './img/signup-image.jpg';
+import LoaderButton from "./LoaderButton";
 
 const SUCCESSMESSAGE = "Success";
 
@@ -11,7 +12,8 @@ class Signup extends Component {
     password: '',
     reppassword:'',
     isValid: false,
-    isSuccess: false
+    isSuccess: false,
+    isLoading: false
   };
 
   constructor(props) {
@@ -60,6 +62,7 @@ class Signup extends Component {
 
     handleSubmit = async e => {
       e.preventDefault();
+      this.setState({isLoading: true});
       var today = new Date();
       const response = await fetch('/profile', {
         method: 'POST',
@@ -79,7 +82,7 @@ class Signup extends Component {
           this.clearState();
           this.setState({ isSuccess: true });
         }
-
+        this.setState({isLoading: false});
       };
       render() {
         return (
@@ -117,7 +120,14 @@ class Signup extends Component {
           <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
           </div>
           <div className="form-group form-button">
-          <input type="submit" name="signup" id="signup" className="form-submit" value="Register"/>
+          <LoaderButton
+          block
+          bsSize="large"
+          type="submit"
+          isLoading={this.state.isLoading}
+          text="Sign up"
+          loadingText=" Registering"
+          />
           </div>
           </form>
           </div>
