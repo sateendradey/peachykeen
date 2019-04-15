@@ -19,7 +19,8 @@ class Main extends Component {
 			restaurantMood:'',
 			restaurantCity: '',
 			restaurantState:'',
-			detailsHidden:true
+			detailsHidden:true,
+			restaurantId:''
 		};
 	}
 
@@ -61,6 +62,9 @@ class Main extends Component {
 			//Selected state
 			var lclState = lclDataArray[0].State;
 			this.setState({restaurantState: lclState});
+			//ID
+			var lclId = lclDataArray[0]._id;
+			this.setState({restaurantId: lclId});
 			this.setState({detailsOpen: true});
 			this.setState({detailsHidden: false});
 	}
@@ -86,6 +90,7 @@ class Main extends Component {
 		var selectedState = this.state.restaurantState;
 		var detailsHidden = this.state.detailsHidden;
 		var detailsOpen = this.state.detailsOpen;
+		var selectedId = this.state.restaurantId;
 
 
     return (
@@ -103,6 +108,7 @@ class Main extends Component {
 			<p id="restaurantMood">{selectedMood}</p>
 			<p id="restaurantRating" >{selectedRating} Outta 5</p>
 			<p id="restaurantReviews"><strong>Reviews</strong></p>
+			<p id="restaurantId">ID: {selectedId}</p>
 				<ul id="restaurantReviewsText" style= {{listStyleType:'none'}} >{reviews}</ul>
 			<address id="restaurantAddress">{selectedCity}, {selectedState}</address>
 		</details>
