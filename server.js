@@ -22,7 +22,6 @@ app.get('/profiles/:email', function (req, res) {
     //request.query : for query string params
     //res.send(getProfile(prof_id));
     getProfile(prof_id, function(response){
-      console.log(response);
       if (response)
         res.send(response);
       else {
@@ -66,7 +65,6 @@ app.post('/profile', function (req, res) {
   };
 
   AddProfile(new_prof,function(response){
-	   console.log(response);
       res.send(response);
   });
 });
