@@ -9,60 +9,96 @@ class Main extends Component {
 		data: [],
 	};
 
-	constructor(props){
+	constructor(props) {
 		super(props);
+		this.componentDidMount = this.componentDidMount.bind(this);
 		this.getDataFromDb = this.getDataFromDb.bind(this);
+		this.pickedRestaurant = this.pickedRestaurant.bind(this);
+		this.state = {
+			restaurants: [],
+			selectedRestaurant: '',
+			isLoading: false,
+			data: [],
+			restaurantNames: [],
+			detailsOpen: false,
+			restaurantReviews:[],
+			restaurantRating:'',
+			restaurantMood:'',
+			restaurantCity: '',
+			restaurantState:'',
+			detailsHidden:true,
+			restaurantId:''
+		};
 	}
+
 	//function to contain the fetch
 	componentDidMount() {
 		//sets isLoading to true if we want to display some graphics during loading
 		this.setState({ isLoading: true});
 		//fetch pulls all restaurant data into an array
 		this.getDataFromDb();
-		// fetch('/restaurants')
-		// .then(res =>res.json())
-		// .then(resArray=>resArray.forEach(function(item,listHTML=[],listItemNames=[]) {
-		// 	//concatenates the values together for each value in our db
-		// 	listItemNames = item.Name.toString();
-		// 	//adds each array item to a dropdown list
-		// 	document.getElementById("restaurants-name").innerHTML += '<option value="'+ listItemNames + '">'+ listItemNames + '</select>'
-		// }))
-		// this.setState({ isLoading: false});
 	}
 
 	getDataFromDb = async () => {
-    const response = await fetch('/restaurants');
+		const response = await fetch('/restaurants');
 		const body = await response.json();
-		var array = Array.from(body);
-		var names = array.map(names => names.Name);
-		console.log(names);
+		this.setState({data: body});
+		var names = Array.from(body).map(names => names.Name);
+		this.setState({restaurantNames: names});
 	};
 
 	pickedRestaurant(selectedRestaurant) {
-			document.getElementById("restaurantDeets").open =false;
-			document.getElementById("restaurantName").hidden =false;
-			selectedRestaurant = document.getElementById("restaurants-name").value;
-			document.getElementById("restaurantReviewsText").innerHTML = '<strong>Reviews</strong>'
-			//fetch pulls all restaurant data into an array
-			fetch('/restaurants')
-			.then(res =>res.json())
-			.then(resArray=>resArray.filter(function(displayThisOne,selectedRestaurant) {
-			selectedRestaurant = document.getElementById("restaurants-name").value;
-			return displayThisOne.Name == selectedRestaurant;
-			}).forEach(function(item,listHTML=[]) {
-				document.getElementById("restaurantName").innerHTML =item.Name.toString();
-				document.getElementById("restaurantMood").innerHTML ='Mood: '+item.Mood.toString();
-				document.getElementById("restaurantRating").innerHTML ='Rating: '+item.Rating.toString() + ' Outta 5';
-				document.getElementById("restaurantAddress").innerHTML ='<strong>Address</strong> <br>'+item.Street.toString() + '<br>' + item.City.toString()+ ', ' +item.State.toString()+ '<br>' +item.Zip.toString();
-				item.Reviews.forEach(function(xitem) {
-					document.getElementById("restaurantReviewsText").innerHTML += '<li>' + xitem + '</li>';
-				})
-				document.getElementById("restaurantDeets").open =true;
-			}))
-
+			//selected Name
+			this.setState({detailsOpen: false});
+			const lclrest = selectedRestaurant.target.value;
+			this.setState({selectedRestaurant: lclrest});
+			//Selected Mood
+			const lclDataArray = this.state.data.filter(mood=>mood.Name == lclrest);
+			var lclMood = lclDataArray[0].Mood;
+			this.setState({restaurantMood:lclMood});
+			//Selected Rating
+			var lclRating = lclDataArray[0].Rating;
+			this.setState({restaurantRating: lclRating});
+			//Selected Reviews
+			var lclReviews = lclDataArray[0].Reviews;
+			this.setState({restaurantReviews: lclReviews});
+			//Selected City
+			var lclCity = lclDataArray[0].City;
+			this.setState({restaurantCity: lclCity});
+			//Selected state
+			var lclState = lclDataArray[0].State;
+			this.setState({restaurantState: lclState});
+			//ID
+			var lclId = lclDataArray[0]._id;
+			this.setState({restaurantId: lclId});
+			this.setState({detailsOpen: true});
+			this.setState({detailsHidden: false});
 	}
 
   render() {
+		//populates the select
+		var options = this.state.restaurantNames?
+			this.state.restaurantNames.map(function(name){
+				return <option value={name}>{name}</option>
+		})
+		: '';
+		//populates the reviews
+		var reviews = this.state.restaurantReviews?
+			this.state.restaurantReviews.map(function(review){
+			return <li value={review}>{review}</li>
+		})
+		:'';
+		//variables to hold the state to display
+		var selectedName = this.state.selectedRestaurant;
+		var selectedMood = this.state.restaurantMood;
+		var selectedRating = this.state.restaurantRating;
+		var selectedCity = this.state.restaurantCity;
+		var selectedState = this.state.restaurantState;
+		var detailsHidden = this.state.detailsHidden;
+		var detailsOpen = this.state.detailsOpen;
+		var selectedId = this.state.restaurantId;
+
+
     return (
 	<React.Fragment>
 	<div class = "App">
@@ -70,22 +106,20 @@ class Main extends Component {
 	<div class="restaurant-content">
 		<form style = {{width:'100%', textAlign: 'center'}}>
 		<h1 class="restaurant-header"> All Restaurants!</h1>
-			<select id="restaurants-name" onChange={this.pickedRestaurant} style = {{width:'100%', textAlign: 'center'}}>
-			<option value="" selected>Select A Restaurant</option>
+			<select className="form-control" id="restaurants-name" onChange={this.pickedRestaurant} style = {{width:'100%', textAlign: 'center'}}>
+				<option value="" selected>Select A Restaurant</option>{options}
 			</select>
 
-		<details id="restaurantDeets">
-			<summary id="restaurantName" hidden='true'></summary>
-			<p id="restaurantMood"></p>
-			<p id="restaurantRating"></p>
-			<p id="restaurantReviews"></p>
-				<ul id="restaurantReviewsText" style= {{listStyleType:'none'}} ></ul>
-			<address id="restaurantAddress"></address>
-
-
+		<details id="restaurantDeets" open={detailsOpen} value = {selectedName} hidden={detailsHidden}>
+		{selectedName}
+			<p id="restaurantMood">{selectedMood}</p>
+			<p id="restaurantRating" >{selectedRating} Outta 5</p>
+			<p id="restaurantReviews"><strong>Reviews</strong></p>
+			<p id="restaurantId">ID: {selectedId}</p>
+				<ul id="restaurantReviewsText" style= {{listStyleType:'none'}} >{reviews}</ul>
+			<address id="restaurantAddress">{selectedCity}, {selectedState}</address>
 		</details>
 		</form>
-
 	</div>
 	</div>
 	</div>
