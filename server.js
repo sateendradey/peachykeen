@@ -60,8 +60,6 @@ app.post('/profile', function (req, res) {
        password:req.body.password, // password
        email: req.body.email, // email
        date: req.body.date,
-       reviews: req.body.reviews,
-       reserve: req.body.reserve
   };
 
   AddProfile(new_prof,function(response){
@@ -78,6 +76,16 @@ function AddProfile(new_prof, callback){
       return callback('Success');
     });
 }
+
+app.get('/restaurants/:id',function (req, res){
+  var dbo = db.db(DATABASE_NAME);
+  var searchTerm = { id: parseInt(req.params.id) };
+  dbo.collection(RESTAURANT_COLLECTION).findOne(searchTerm, function(err, result) {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
 
 MongoClient.connect(CONNECTION_URL, function (err, database) {
    if (err)

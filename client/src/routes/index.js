@@ -9,6 +9,7 @@ import NotFound from "../components/NotFound";
 import Profile from "../components/Profile";
 import AuthenticatedRoute from "../components/AuthenticatedRoute";
 import UnauthenticatedRoute from "../components/UnauthenticatedRoute";
+import Restaurant from '../components/Restaurant';
 
 
 
@@ -19,6 +20,7 @@ const Routes = ({ childProps }) => (
     <UnauthenticatedRoute exact path="/signup" exact component={Signup} props={childProps} />
     <UnauthenticatedRoute exact path="/login" exact component={Login} props={childProps} />
     <AppliedRoute exact path="/about" exact component={About} props={childProps} />
+    <AppliedRoute exact path="/restaurant/:id" exact component={Restaurant} props={childProps} />
     <AuthenticatedRoute exact path="/profile/:email" exact component={Profile} props={childProps} />
     <AuthenticatedRoute exact path="/profile" exact component={Profile} props={childProps} />
     <Route component={NotFound} />

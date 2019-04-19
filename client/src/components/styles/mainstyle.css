@@ -69,6 +69,15 @@ figure {
 	padding: 2vh;
 }
 
+.profile-review{
+	margin: 2vh auto;
+	padding: 2vh 4vh;
+	background: #f8f8f8;
+	border-radius: 8%;
+	border: 2px solid #f8f8f8;
+}
+
+
 @media screen and (min-width: 401px) {
   .profile-details,.profile-reviews {
     width: 80%;
@@ -125,4 +134,34 @@ h4{
 .em-peach{
 	height: 1.5em;
 	margin-right: 0.5em;
+}
+
+.caption{
+	font-weight: bold;
+	margin-right: 1em;
+}
+
+.fa-check-square{
+	color: dodgerblue;
+}
+
+.fa-times-circle{
+	color: red;
+}
+.numberCircle {
+		display: inline-block;
+    border-radius: 50%;
+		height: 18px;
+		width: 18px;
+    background: green;
+		margin-right: 1vh;
+    border: 2px;
+    color: white;
+    text-align: center;
+    font-size: 0.8em;
+		font-weight: bold;
+}
+.rewviewText{
+	font-style: italic;
+	display: block;
 }

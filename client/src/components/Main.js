@@ -44,10 +44,12 @@ class Main extends Component {
 		const body = await response.json();
 		this.setState({data: body});
 		var names = Array.from(body).map(names => names.Name);
-		this.setState({restaurantNames: names});
+		this.setState({restaurantNames: names,
+									  isLoading: false});
 	};
 
 	pickedRestaurant(selectedRestaurant) {
+		this.setState({ isLoading: true});
 		//selected Name
 		this.setState({detailsOpen: false});
 		const lclrest = selectedRestaurant.target.value;
@@ -73,6 +75,7 @@ class Main extends Component {
 		this.setState({restaurantId: lclId});
 		this.setState({detailsOpen: true});
 		this.setState({detailsHidden: false});
+		this.setState({ isLoading: false});
 	}
 
 	render() {
