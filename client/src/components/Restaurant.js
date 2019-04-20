@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
 import './styles/mainstyle.css';
+import LoaderButton from "./LoaderButton";
 
 class Restaurant extends Component{
   state = {
+    id: '',
     Name: '',
     Reviews:null,
     Rating:'',
@@ -16,14 +18,25 @@ class Restaurant extends Component{
     TakeOut: '',
     Address1: '',
     Address2:'',
+    newReview: '',
+    email: '',
+    isAuthenticated: false,
     isLoading: false,
+    isSaving: false,
   }
 
   constructor(props) {
     super(props);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.getDataFromDb = this.getDataFromDb.bind(this);
+
   }
+
+  userHasAuthenticated = authenticated => {
+    this.setState({ isAuthenticated: authenticated,
+      name: sessionStorage.getItem("UserName"),
+      email: sessionStorage.getItem("Email")});
+    }
 
   //function to contain the fetch
   componentDidMount() {
@@ -31,7 +44,12 @@ class Restaurant extends Component{
     this.setState({ isLoading: true});
     //fetch pulls all restaurant data into an array
     this.getDataFromDb();
+
+    var isAuthenticated = sessionStorage.getItem("isAuthenticated");
+    this.userHasAuthenticated(isAuthenticated);
+    this.setState({ isLoading: false});
   }
+
 
   getDataFromDb = async () => {
     this.setState({ isLoading: true});
@@ -40,6 +58,7 @@ class Restaurant extends Component{
     const response = await fetch(requestUrl);
     const body = await response.json();
     this.setState({ Name: body.Name,
+      id: body.id,
       Reviews: Array.from(body.Reviews),
       Rating:body.Rating,
       Type: body.Type,
@@ -76,8 +95,25 @@ class Restaurant extends Component{
       </div>
     })
     : "This restaurant has no reviews yet";
+    var link = "/Login?redirect=/restaurant/"+this.state.id;
+    var LoginScreen = (
+      <form onSubmit={this.handleNewReview}>
+      <textarea className="form-control" name = "Review" rows="5" placeholder="Write your review" value={this.state.newReview}
+      onChange={e => this.setState({ newReview: e.target.value })} required/>
+      <div align="right">
+      <LoaderButton
+      block
+      bsSize="small"
+      type="submit"
+      isLoading={this.state.isSaving}
+      text="Save Review"
+      loadingText=" Saving.."
+      />
+      </div>
+      </form>
+    );
 
-    console.log(RestReviews);
+    var WriteReview = this.state.isAuthenticated ? LoginScreen : <div>Please <a href={link}> Login </a> to write a review</div>;
 
     var DaysOfWeek = this.state.Days.map(function(day){
       switch(day) {
@@ -137,7 +173,11 @@ class Restaurant extends Component{
       </div>
       <div className="profile-details">
       <div className="profile-reviews">
-      <h4 className="form-title">Reviews</h4>
+      <h5 className="form-title">Add a review</h5>
+      {WriteReview}
+      </div>
+      <div className="profile-reviews">
+      <h5 className="form-title">Reviews</h5>
       {RestReviews}
       </div>
       </div>

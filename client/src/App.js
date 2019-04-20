@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, withRouter, Link } from 'react-router-dom';
 import logo from './img/Peach-Logo.png'
 import avatar from './img/user-profile.jpg'
 import Router from './routes';
 import './team08.css';
+
 
 class App extends Component {
   state = {
@@ -32,12 +33,12 @@ class App extends Component {
     }
 
     handleLogoff = async e => {
-      e.preventDefault();
       this.userHasAuthenticated(false);
       this.setState({isAuthenticated:false,
         name: '',
         email: ''});
       sessionStorage.clear();
+      this.props.history.push("/About");
       };
 
       render() {
@@ -45,7 +46,7 @@ class App extends Component {
           isAuthenticated: this.state.isAuthenticated,
           userHasAuthenticated: this.userHasAuthenticated
         };
-
+        var linkLogin = `/Login?redirect=${this.props.location.pathname}${this.props.location.search}`;
         var profile = "/Profile/" + this.state.email;
         return (
           <div className="App">
@@ -78,13 +79,14 @@ class App extends Component {
           </ul>
           {this.state.isAuthenticated
             ? <React.Fragment>
-              <a className="nav-link men-right welcome-text" href={profile}><img className="avatar" src={avatar} alt="user avatar"/>{'\u00A0'}Welcome {this.state.name}!</a>
-              <a className="nav-link men-right" href="#" onClick={this.handleLogoff}><i className="fas fa-user-plus"></i>{'\u00A0'}Logout</a>
-              </React.Fragment>
+            <a className="nav-link men-right welcome-text" href={profile}><img className="avatar" src={avatar} alt="user avatar"/>{'\u00A0'}Welcome {this.state.name}!</a>
+            <a className="nav-link men-right" href={linkLogin} onClick={this.handleLogoff}><i className="fas fa-user-plus"></i>{'\u00A0'}Logout</a>
+            </React.Fragment>
             : <React.Fragment>
-              <a className="nav-link men-right" href="/Login"><i className="fas fa-sign-in-alt"></i>{'\u00A0'}Login</a>
-              <a className="nav-link men-right signup-text" href="/Signup"><i className="fas fa-user-plus"></i>{'\u00A0'}Sign up</a>
-              </React.Fragment>
+            <a className="nav-link men-right signup-text" href="/Signup"><i className="fas fa-user-plus"></i>{'\u00A0'}Sign up</a>
+
+            <a className="nav-link men-right" href={linkLogin}><i className="fas fa-sign-in-alt"></i>{'\u00A0'}Login</a>
+            </React.Fragment>
           }
           </div>
           </nav>
@@ -98,4 +100,4 @@ class App extends Component {
 
 
 
-    export default App;
+    export default withRouter(App);

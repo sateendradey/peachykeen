@@ -82,7 +82,6 @@ app.get('/restaurants/:id',function (req, res){
   var searchTerm = { id: parseInt(req.params.id) };
   dbo.collection(RESTAURANT_COLLECTION).findOne(searchTerm, function(err, result) {
     if (err) throw err;
-    console.log(result);
     res.send(result);
   });
 });
