@@ -163,3 +163,15 @@ h4{
 	font-style: italic;
 	display: block;
 }
+
+#TermsButton{
+		 display: inline;
+		 background:none!important;
+     color:dodgerblue;
+     border:none;
+     padding:0!important;
+     font: 0.6em;
+     /*border is optional*/
+     border-bottom:1px solid dodgerblue;
+     cursor: pointer;
+}

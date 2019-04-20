@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 import { Alert } from 'reactstrap';
 import signup_img from './img/signup-image.jpg';
 import LoaderButton from "./LoaderButton";
+import Modal from 'react-modal';
+import logo from './img/Peach-Logo.png';
 
 const SUCCESSMESSAGE = "Success";
+
+Modal.setAppElement('#root')
 
 class Signup extends Component {
   state = {
@@ -13,7 +18,8 @@ class Signup extends Component {
     reppassword:'',
     isValid: false,
     isSuccess: false,
-    isLoading: false
+    isLoading: false,
+    modalIsOpen: false
   };
 
   constructor(props) {
@@ -24,6 +30,9 @@ class Signup extends Component {
     this.onDismissValid = this.onDismissValid.bind(this);
     this.validatePassword = this.validatePassword.bind(this);
     this.routeChange = this.routeChange.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   onDismissSuccess() {
@@ -84,7 +93,46 @@ class Signup extends Component {
         }
         this.setState({isLoading: false});
       };
+
+      openModal() {
+        this.setState({modalIsOpen: true});
+      }
+
+      afterOpenModal() {
+        // references are now sync'd and can be accessed.
+      }
+
+      closeModal() {
+        this.setState({modalIsOpen: false});
+      }
       render() {
+        var TermsCond = <Modal
+          isOpen={this.state.modalIsOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeModal}
+          style={modalStyles}
+          contentLabel="Example Modal"
+          id = "TermsModal"
+          >
+          <h3>Terms and Conditions</h3>
+          <div id="box">
+          <div id="model-left">
+          Our terms and conditions are pretty simple!
+          <br/>
+          We have two simple rules:
+          <br/>
+          1. Have FUN!
+          <br/>
+          2. Don't SUE us!
+          <br/>
+          <br/>
+          <Link onClick={this.closeModal}>Close</Link>
+          </div>
+          <div id="model-right">
+          <img src={logo} id="peaches_logo" alt="Peaches Logo" />
+          </div>
+          </div>
+          </Modal>;
         return (
           <div className="App">
           <section className="sign-in">
@@ -117,7 +165,8 @@ class Signup extends Component {
           onChange={this.validatePassword} required/>
           </div>
           <div className="form-group">
-          <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+          <p>By creating an account you agree to our <Link onClick={this.openModal}>Terms & Privacy</Link>.</p>
+          {TermsCond}
           </div>
           <div className="form-group form-button">
           <LoaderButton
@@ -144,3 +193,15 @@ class Signup extends Component {
     }
 
     export default Signup;
+
+    const modalStyles = {
+      content : {
+        height                : 'auto',
+        width                 : 'auto',
+        top                   : '30%',
+        left                  : '20%',
+        right                 : 'auto',
+        bottom                : 'auto',
+        transform             : 'translate(-5vh, -5vh)'
+      }
+    };
