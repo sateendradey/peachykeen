@@ -64,7 +64,6 @@ class Profile extends Component {
 }
 
   render() {
-    console.log(this.state.reservations);
     var RestReviews = this.state.restaurantReviews  ?
     this.state.restaurantReviews.length !== 0 ?
     this.state.restaurantReviews.map(function(review){

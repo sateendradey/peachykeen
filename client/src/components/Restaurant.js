@@ -159,6 +159,7 @@ class Restaurant extends Component{
       onChange={e => this.setState({ newReview: e.target.value })}/>
       <div align="right">
       <LoaderButton
+      id = "saveReview"
       bssize="small"
       type="submit"
       isLoading={this.state.isSaving}
