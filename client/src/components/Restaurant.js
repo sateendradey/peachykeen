@@ -2,8 +2,18 @@ import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
 import './styles/mainstyle.css';
 import LoaderButton from "./LoaderButton";
+import Modal from 'react-modal';
+import DatePicker from 'react-datepicker'
+import setMinutes from "date-fns/setMinutes";
+import setHours from "date-fns/setHours";
+
+import moment from 'moment';
+import logo from './img/Peach-Logo.png';
+
 const SUCCESSMESSAGE = "Success";
 
+
+Modal.setAppElement('#root')
 class Restaurant extends Component{
   state = {
     id: '',
@@ -27,7 +37,13 @@ class Restaurant extends Component{
     isSuccess: false,
     color: "danger",
     user_id:"",
-    user_name:""
+    user_name:"",
+    modalIsOpen: false,
+    reserveDate: setHours(new Date(),24),
+    daysNumber: [],
+    openFrom: '',
+    openTill: '',
+    disabledTimes: []
   }
 
   constructor(props) {
@@ -35,6 +51,29 @@ class Restaurant extends Component{
     this.componentDidMount = this.componentDidMount.bind(this);
     this.getDataFromDb = this.getDataFromDb.bind(this);
     this.onDismissSuccess = this.onDismissSuccess.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.handleChangeReserve = this.handleChangeReserve.bind(this);
+    this.setDisabledTimes = this.setDisabledTimes.bind(this);
+  }
+
+  handleChangeReserve(date) {
+    this.setState({
+      reserveDate: date
+    });
+  }
+
+  openModal() {
+    this.setState({modalIsOpen: true});
+  }
+
+  afterOpenModal() {
+    // references are now sync'd and can be accessed.
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false});
   }
 
   userHasAuthenticated = authenticated => {
@@ -42,6 +81,53 @@ class Restaurant extends Component{
       user_name: sessionStorage.getItem("UserName"),
       user_id: sessionStorage.getItem("Email")
     });
+  }
+
+  isOpen = (date) => {
+    const day = new Date(date).getDay()
+    var ret = this.state.daysNumber.indexOf(day) === -1 ? false:true;
+    return ret;
+  }
+
+  setDisabledTimes(){
+    const openTime = this.openTime(this.state.openFrom);
+    openTime.setMinutes(-3);
+    const closeTime = this.openTime(this.state.openTill);
+    var disableTime = [];
+    //like 11am - 3 am, then disable all times between 3am and 11am
+    if (closeTime < openTime){
+      var loop = setMinutes(closeTime, closeTime.getMinutes() + 30);
+      while (loop < openTime){
+        disableTime.push(loop);
+        loop = setMinutes(loop, loop.getMinutes() + 30);
+      }
+    }
+    else{
+      var loop = new Date();
+      loop.setHours(0,0,0,0);
+      while (loop < openTime){
+
+        disableTime.push(loop);
+        loop = setMinutes(loop, loop.getMinutes() + 30);
+      }
+      const midnight = new Date();
+      midnight.setHours(23,59,0,0);
+      console.log(midnight);
+      loop = setMinutes(closeTime, closeTime.getMinutes() + 30);
+      console.log(loop);
+      while (loop < midnight){
+        console.log(loop);
+        disableTime.push(loop);
+        loop = setMinutes(loop, loop.getMinutes() + 30);
+      }
+    }
+    this.setState({ disabledTimes: disableTime});
+  }
+  openTime(time){
+    var Time = time.split(':');
+    var hours = Time[0];
+    var mins = Time[1];
+    return setHours(setMinutes(new Date(), mins), hours);
   }
 
   //function to contain the fetch
@@ -60,7 +146,6 @@ class Restaurant extends Component{
   getDataFromDb = async () => {
     this.setState({ isLoading: true});
     var requestUrl = "/restaurants/" + this.props.match.params.id;
-    console.log(requestUrl);
     const response = await fetch(requestUrl);
     const body = await response.json();
     this.setState({ Name: body.Name,
@@ -70,14 +155,46 @@ class Restaurant extends Component{
       Type: body.Type,
       Mood:body.Mood,
       Bar: body.Bar,
-      Hours: body.Hours,
+      Hours: Array.from(body.Hours),
       Days: Array.from(body.Days),
       Catering:body.Catering ? <i className="fas fa-check-square"></i>:<i className="fas fa-times-circle"></i>,
       TakeOut: body.TakeOut ? <i className="fas fa-check-square"></i>:<i className="fas fa-times-circle"></i>,
       Address1: body.Street,
-      Address2: body.City +", "+ body.State+" "+body.Zip
+      Address2: body.City +", "+ body.State+" "+body.Zip,
+      openFrom: body.Hours[0],
+      openTill: body.Hours[1]
     });
-    this.setState({ isLoading: false});
+    var arrDays =[];
+    this.state.Days.map(function(day){
+      switch(day) {
+        case "M":
+        arrDays.push(1);
+        break;
+        case "T":
+        arrDays.push(2);
+        break;
+        case "W":
+        arrDays.push(3);
+        break;
+        case "R":
+        arrDays.push(4);
+        break;
+        case "F":
+        arrDays.push(5);
+        break;
+        case "Sa":
+        arrDays.push(6);
+        break;
+        case "S":
+        arrDays.push(0);
+        break;
+        default:
+        break;
+      }
+    });
+    this.setState({ daysNumber: arrDays });
+    this.setDisabledTimes();
+    this.setState({ isLoading: false });
   };
 
   onDismissSuccess() {
@@ -124,7 +241,6 @@ class Restaurant extends Component{
             color: "danger"
           });
         }
-        console.log(response);
       }
     }
     this.setState({
@@ -132,11 +248,81 @@ class Restaurant extends Component{
     });
   }
 
+
   render() {
+    var link = "/Login?redirect=/restaurant/"+this.state.id;
+    //Create graphic for each day of the week restaurant is open
+    var DaysOfWeek = this.state.Days.map(function(day){
+      switch(day) {
+        case "M":
+        return <span className="numberCircle"> M </span>
+        case "T":
+        return <span className="numberCircle"> T </span>
+        case "W":
+        return <span className="numberCircle"> W </span>
+        case "R":
+        return <span className="numberCircle"> Th </span>
+        case "F":
+        return <span className="numberCircle"> F </span>
+        case "Sa":
+        return <span className="numberCircle"> Sa </span>
+        case "S":
+        return <span className="numberCircle"> S </span>
+        default:
+        return "";
+      }
+    });
+    //Make reservation section
+    var ReserveModal = <React.Fragment>
+    <button type="button" className="btn btn-primary" id="reserveButton"  onClick={this.openModal}>Make a reservation</button>
+    <Modal
+    isOpen={this.state.modalIsOpen}
+    onAfterOpen={this.afterOpenModal}
+    onRequestClose={this.closeModal}
+    style={modalStyles}
+    contentLabel="Make a reservation"
+    id = "TermsModal"
+    >
+    <h3>Reserve a table at {this.state.Name}</h3>
+    <div id="box">
+    <div id="model-left-reserve">
+    <form>
+    Choose your reservation date & time
+    <br/>
+    <span id="warningmessage"> *Dates and times that are not selectable are outside the hours of operation of the restaurant </span>
+    <br/>
+    <DatePicker id="resDatePicker"
+        selected={this.state.reserveDate}
+        onChange={this.handleChangeReserve}
+        minDate={setHours(new Date(),24)}
+        excludeTimes={this.state.disabledTimes}
+        filterDate={ this.isOpen }
+        showTimeSelect
+        timeFormat="HH:mm"
+        timeIntervals={30}
+        dateFormat="EEEE, MMMM d, yyyy h:mm aa"
+        timeCaption="Time"
+    />
+    <br/>
+    <br/>
+    <button className="btn btn-success" type="submit"> Confirm Reservation </button>
+    <br/>
+    <br/>
+    </form>
+    <button className="btn btn-danger" type="button" onClick={this.closeModal}> Cancel </button>
+    </div>
+    <div id="model-right-reserve">
+    <img src={logo} id="peaches_logo" alt="Peaches Logo" />
+    </div>
+    </div>
+    </Modal>
+    </React.Fragment>;
+    var ReserveRest = this.state.isAuthenticated ? ReserveModal: <div>Please <a href={link}> Login </a> to make a reservation</div>;
+    //Populate reviews
     var RestReviews = this.state.Reviews ?
     this.state.Reviews.length !== 0 ?
     this.state.Reviews.map(function(review){
-      return <div className="profile-review">
+      return <div className="profile-review rounded">
       <div className="row">
       <span className="caption">Reviewer</span> {review.user_name}
       </div>
@@ -152,7 +338,8 @@ class Restaurant extends Component{
       </div>
     }): "This restaurant has no reviews yet"
     : "This restaurant has no reviews yet";
-    var link = "/Login?redirect=/restaurant/"+this.state.id;
+
+    //populate new review section
     var LoginScreen = (
       <form onSubmit={this.handleNewReview} >
       <textarea className="form-control" name = "Review" rows="5" placeholder="Write your review" value={this.state.newReview}
@@ -172,34 +359,6 @@ class Restaurant extends Component{
 
     var WriteReview = this.state.isAuthenticated ? LoginScreen : <div>Please <a href={link}> Login </a> to write a review</div>;
 
-    var DaysOfWeek = this.state.Days.map(function(day){
-      switch(day) {
-        case "M":
-        return <span className="numberCircle"> M </span>
-        break;
-        case "T":
-        return <span className="numberCircle"> T </span>
-        break;
-        case "W":
-        return <span className="numberCircle"> W </span>
-        break;
-        case "R":
-        return <span className="numberCircle"> Th </span>
-        break;
-        case "F":
-        return <span className="numberCircle"> F </span>
-        break;
-        case "Sa":
-        return <span className="numberCircle"> Sa </span>
-        break;
-        case "S":
-        return <span className="numberCircle"> S </span>
-        break;
-        default:
-        return "";
-        break;
-      }
-    });
     return (
       <div className="App">
       <section className="profile">
@@ -220,7 +379,7 @@ class Restaurant extends Component{
       <p><span className="caption">Food Type</span>{this.state.Type}</p>
       <p><span className="caption">Mood</span>{this.state.Mood}</p>
       <p><span className="caption">Bar</span>{this.state.Bar}</p>
-      <p><span className="caption">Hours of Operation</span>{this.state.Hours}</p>
+      <p><span className="caption">Hours of Operation</span>{moment(this.state.openFrom, 'HH:mm').format('h:mm A')} to {moment(this.state.openTill, 'HH:mm').format('h:mm A')}</p>
       <p><span className="caption">Days Open</span>{DaysOfWeek}</p>
       <p><span className="caption">Catering</span>{this.state.Catering}</p>
       <p><span className="caption">TakeOut</span>{this.state.TakeOut}</p>
@@ -228,6 +387,7 @@ class Restaurant extends Component{
       <p><span className="caption">Address</span><br />
       {this.state.Address1}<br/>
       {this.state.Address2}</p>
+      {ReserveRest}
       </div>
       </div>
       </div>
@@ -251,3 +411,15 @@ class Restaurant extends Component{
   }
 }
 export default Restaurant;
+
+const modalStyles = {
+  content : {
+    height                : '60%',
+    width                 : 'auto',
+    top                   : '30%',
+    left                  : '20%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    transform             : 'translate(-5vh, -5vh)'
+  }
+};

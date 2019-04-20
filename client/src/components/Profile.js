@@ -68,7 +68,7 @@ class Profile extends Component {
     this.state.restaurantReviews.length !== 0 ?
     this.state.restaurantReviews.map(function(review){
       var restaurantLink = '/restaurant/'+review.restID;
-      return <div className="profile-review">
+      return <div className="profile-review rounded">
       <div className="row">
       <span className="caption">Restaurant Name</span> <a href={restaurantLink}> {review.restName} </a>
       </div>
@@ -88,7 +88,7 @@ class Profile extends Component {
     this.state.reservations ?
     this.state.reservations.length !== 0 ?
     this.state.reservations.map(function(reservation){
-      return <div className="profile-reviews">
+      return <div className="profile-review rounded">
       <div className="row">
       <span className="caption">Restaurant Name</span> {reservation.name}
       </div>

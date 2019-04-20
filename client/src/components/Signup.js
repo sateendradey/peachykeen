@@ -111,7 +111,7 @@ class Signup extends Component {
           onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
           style={modalStyles}
-          contentLabel="Example Modal"
+          contentLabel="Terms & Conditions"
           id = "TermsModal"
           >
           <h3>Terms and Conditions</h3>

@@ -70,9 +70,7 @@ figure {
 .profile-review{
 	margin: 2vh auto;
 	padding: 2vh 4vh;
-	background: #f8f8f8;
-	border-radius: 8%;
-	border: 2px solid #f8f8f8;
+	background: #f8f8ff;
 }
 
 
@@ -174,4 +172,9 @@ h4{
      /*border is optional*/
      border-bottom:1px solid dodgerblue;
      cursor: pointer;
+}
+
+#reserveButton{
+	background-color: indigo;
+	border-color: indigo;
 }

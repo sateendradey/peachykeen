@@ -17,10 +17,6 @@ body{
 	margin: 0 auto;
 }
 
-div{
-	height: 100%;
-}
-
 section {
 	margin: 0 auto;
 }
@@ -372,4 +368,25 @@ footer{
 
 #box{
 	display: inline-block;
+}
+
+#model-left-reserve{
+	float: left;
+	height: auto;
+}
+
+#model-right-reserve{
+	float: right;
+	padding-left: 2vh;
+	height: auto;
+}
+
+#resDatePicker{
+	width: 140%;
+}
+
+#warningmessage{
+	color:red;
+	font-size: 0.5em;
+	line-height: 0.5;
 }
