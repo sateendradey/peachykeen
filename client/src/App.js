@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, withRouter, Link } from 'react-router-dom';
+import { BrowserRouter, withRouter } from 'react-router-dom';
 import logo from './img/Peach-Logo.png'
 import avatar from './img/user-profile.jpg'
 import Router from './routes';
@@ -38,7 +38,7 @@ class App extends Component {
         name: '',
         email: ''});
       sessionStorage.clear();
-      this.props.history.push("/About");
+      this.props.history.push("/");
       };
 
       render() {

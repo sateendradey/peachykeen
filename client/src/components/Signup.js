@@ -74,8 +74,8 @@ class Signup extends Component {
           password:this.state.password, // password
           email: this.state.email,
           date: today,
-          reserve: [],
-          reviews: []}),
+          Reserve: [],
+          Reviews: []}),
         });
         const body = await response.text();
         if (body === SUCCESSMESSAGE){

@@ -55,7 +55,7 @@ class Main extends Component {
 		const lclrest = selectedRestaurant.target.value;
 		this.setState({selectedRestaurant: lclrest});
 		//Selected Mood
-		const lclDataArray = this.state.data.filter(mood=>mood.Name == lclrest);
+		const lclDataArray = this.state.data.filter(mood=>mood.Name === lclrest);
 		var lclMood = lclDataArray[0].Mood;
 		this.setState({restaurantMood:lclMood});
 		//Selected Rating

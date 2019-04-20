@@ -55,10 +55,9 @@ class Profile extends Component {
     else{
       const body = await response.json();
       var sinceDate = new Date(body.date).toDateString();
-      console.log(body);
       await this.setState({ since: sinceDate,
-                            restaurantReviews: Array.from(body.reviews),
-                            reservations: Array.from(body.reserve)});
+                            restaurantReviews: Array.from(body.Reviews),
+                            reservations: Array.from(body.Reserve)});
       var score = this.state.restaurantReviews.length * 10 + this.state.reservations.length * 15;
       await this.setState({ score: score});
   }

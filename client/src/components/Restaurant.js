@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
 import './styles/mainstyle.css';
 import LoaderButton from "./LoaderButton";
+const SUCCESSMESSAGE = "Success";
 
 class Restaurant extends Component{
   state = {
@@ -23,20 +24,25 @@ class Restaurant extends Component{
     isAuthenticated: false,
     isLoading: false,
     isSaving: false,
+    isSuccess: false,
+    color: "danger",
+    user_id:"",
+    user_name:""
   }
 
   constructor(props) {
     super(props);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.getDataFromDb = this.getDataFromDb.bind(this);
-
+    this.onDismissSuccess = this.onDismissSuccess.bind(this);
   }
 
   userHasAuthenticated = authenticated => {
     this.setState({ isAuthenticated: authenticated,
-      name: sessionStorage.getItem("UserName"),
-      email: sessionStorage.getItem("Email")});
-    }
+      user_name: sessionStorage.getItem("UserName"),
+      user_id: sessionStorage.getItem("Email")
+    });
+  }
 
   //function to contain the fetch
   componentDidMount() {
@@ -71,10 +77,60 @@ class Restaurant extends Component{
       Address1: body.Street,
       Address2: body.City +", "+ body.State+" "+body.Zip
     });
-
     this.setState({ isLoading: false});
   };
 
+  onDismissSuccess() {
+    this.setState({ isSuccess: false });
+  }
+
+  handleNewReview = async (e) => {
+    e.preventDefault();
+    this.setState({isSaving: true});
+    var today = new Date();
+    if (this.state.newReview === ""){
+      this.setState({ isSuccess: true,
+        message: "Please enter a review",
+        color: "warning"
+      });
+    }
+    else{
+      if (window.confirm('Are you sure you wish to post this review?')){
+        const response = await fetch('/restaurant/review/'+this.state.id, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_id: this.state.user_id, // name
+            user_name:this.state.user_name, // password
+            rest_name:this.state.Name, //restaurant Name
+            review: this.state.newReview,
+            date: today
+          }),
+        });
+        const body = await response.text();
+        if (body === SUCCESSMESSAGE){
+          this.setState({ isSuccess: true,
+            message: "New review updated successfully",
+            color: "success",
+            newReview: ""
+          });
+          this.getDataFromDb();
+        }
+        else{
+          this.setState({ isSuccess: true,
+            message: "Issue updating review. Please try again",
+            color: "danger"
+          });
+        }
+        console.log(response);
+      }
+    }
+    this.setState({
+      isSaving: false
+    });
+  }
 
   render() {
     var RestReviews = this.state.Reviews ?
@@ -97,9 +153,9 @@ class Restaurant extends Component{
     : "This restaurant has no reviews yet";
     var link = "/Login?redirect=/restaurant/"+this.state.id;
     var LoginScreen = (
-      <form onSubmit={this.handleNewReview}>
+      <form onSubmit={this.handleNewReview} >
       <textarea className="form-control" name = "Review" rows="5" placeholder="Write your review" value={this.state.newReview}
-      onChange={e => this.setState({ newReview: e.target.value })} required/>
+      onChange={e => this.setState({ newReview: e.target.value })}/>
       <div align="right">
       <LoaderButton
       block
@@ -118,25 +174,28 @@ class Restaurant extends Component{
     var DaysOfWeek = this.state.Days.map(function(day){
       switch(day) {
         case "M":
-          return <span className="numberCircle"> M </span>
+        return <span className="numberCircle"> M </span>
         break;
         case "T":
-          return <span className="numberCircle"> T </span>
+        return <span className="numberCircle"> T </span>
         break;
         case "W":
-          return <span className="numberCircle"> W </span>
+        return <span className="numberCircle"> W </span>
         break;
         case "R":
-          return <span className="numberCircle"> Th </span>
+        return <span className="numberCircle"> Th </span>
         break;
         case "F":
-          return <span className="numberCircle"> F </span>
+        return <span className="numberCircle"> F </span>
         break;
         case "Sa":
-          return <span className="numberCircle"> Sa </span>
+        return <span className="numberCircle"> Sa </span>
         break;
         case "S":
-          return <span className="numberCircle"> S </span>
+        return <span className="numberCircle"> S </span>
+        break;
+        default:
+        return "";
         break;
       }
     });
@@ -174,6 +233,9 @@ class Restaurant extends Component{
       <div className="profile-details">
       <div className="profile-reviews">
       <h5 className="form-title">Add a review</h5>
+      <Alert color={this.state.color} isOpen={this.state.isSuccess} toggle={this.onDismissSuccess}>
+      {this.state.message}
+      </Alert>
       {WriteReview}
       </div>
       <div className="profile-reviews">
