@@ -72,8 +72,8 @@ class Restaurant extends Component{
       Bar: body.Bar,
       Hours: body.Hours,
       Days: Array.from(body.Days),
-      Catering:body.Catering ? <i class="fas fa-check-square"></i>:<i class="fas fa-times-circle"></i>,
-      TakeOut: body.TakeOut ? <i class="fas fa-check-square"></i>:<i class="fas fa-times-circle"></i>,
+      Catering:body.Catering ? <i className="fas fa-check-square"></i>:<i className="fas fa-times-circle"></i>,
+      TakeOut: body.TakeOut ? <i className="fas fa-check-square"></i>:<i className="fas fa-times-circle"></i>,
       Address1: body.Street,
       Address2: body.City +", "+ body.State+" "+body.Zip
     });
@@ -134,6 +134,7 @@ class Restaurant extends Component{
 
   render() {
     var RestReviews = this.state.Reviews ?
+    this.state.Reviews.length !== 0 ?
     this.state.Reviews.map(function(review){
       return <div className="profile-review">
       <div className="row">
@@ -149,7 +150,7 @@ class Restaurant extends Component{
       <span className="rewviewText">{review.review}</span>
       </div>
       </div>
-    })
+    }): "This restaurant has no reviews yet"
     : "This restaurant has no reviews yet";
     var link = "/Login?redirect=/restaurant/"+this.state.id;
     var LoginScreen = (
@@ -158,8 +159,7 @@ class Restaurant extends Component{
       onChange={e => this.setState({ newReview: e.target.value })}/>
       <div align="right">
       <LoaderButton
-      block
-      bsSize="small"
+      bssize="small"
       type="submit"
       isLoading={this.state.isSaving}
       text="Save Review"
@@ -242,9 +242,6 @@ class Restaurant extends Component{
       <h5 className="form-title">Reviews</h5>
       {RestReviews}
       </div>
-      </div>
-      <div className="profile-details">
-
       </div>
       </section>
       </div>

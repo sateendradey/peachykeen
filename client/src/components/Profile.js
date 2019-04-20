@@ -64,34 +64,41 @@ class Profile extends Component {
 }
 
   render() {
-    var RestReviews = this.state.restaurantReviews ?
+    console.log(this.state.reservations);
+    var RestReviews = this.state.restaurantReviews  ?
+    this.state.restaurantReviews.length !== 0 ?
     this.state.restaurantReviews.map(function(review){
-      return <div className="profile-reviews">
+      var restaurantLink = '/restaurant/'+review.restID;
+      return <div className="profile-review">
       <div className="row">
-      Restaurant Name: {review.name}
-      </div>
-      <div className="row">
-      Review Date: {new Date(review.date).toDateString()}
+      <span className="caption">Restaurant Name</span> <a href={restaurantLink}> {review.restName} </a>
       </div>
       <div className="row">
-      Review: {review.review}
+      <span className="caption">Review Date</span> {new Date(review.date).toDateString()}
+      </div>
+      <div className="row">
+      <span className="caption">Review</span>
+      </div>
+      <div className="row">
+      <span className="rewviewText">{review.review}</span>
       </div>
       </div>
-    })
-    : "";
+    }) : "You have no reviews! Time to get peaching!"
+    : "You have no reviews! Time to get peaching!";
     var RestReserve =
     this.state.reservations ?
+    this.state.reservations.length !== 0 ?
     this.state.reservations.map(function(reservation){
       return <div className="profile-reviews">
       <div className="row">
-      Restaurant Name: {reservation.name}
+      <span className="caption">Restaurant Name</span> {reservation.name}
       </div>
       <div className="row">
-      Date: {new Date(reservation.date).toDateString()}
+      <span className="caption">Date</span> {new Date(reservation.date).toDateString()}
       </div>
       </div>
-    })
-    : "";
+    }) : "You have no reservations! You should really treat yourself today!"
+    : "You have no reservations! You should really treat yourself today!";
     return (
       <div className="App">
       <section className="profile">
@@ -115,10 +122,16 @@ class Profile extends Component {
       </div>
       </div>
       <div className="profile-details">
+      <div className="profile-reviews">
+      <h5 className="form-title">Reservations</h5>
         {RestReserve}
       </div>
+      </div>
       <div className="profile-details">
-        {RestReviews}
+      <div className="profile-reviews">
+      <h5 className="form-title">Reviews</h5>
+      {RestReviews}
+      </div>
       </div>
       </section>
       </div>
