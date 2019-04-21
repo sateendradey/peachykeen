@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
+import moment from 'moment';
 import avatar from './img/user-profile.jpg'
 import './styles/mainstyle.css';
 
@@ -90,10 +91,10 @@ class Profile extends Component {
     this.state.reservations.map(function(reservation){
       return <div className="profile-review rounded">
       <div className="row">
-      <span className="caption">Restaurant Name</span> {reservation.name}
+      <span className="caption">Restaurant Name</span> {reservation.restName}
       </div>
       <div className="row">
-      <span className="caption">Date</span> {new Date(reservation.date).toDateString()}
+      <span className="caption">Date</span> {moment(reservation.date).format("dddd, MMMM D, YYYY")} at {moment(reservation.date).format("h:mm a")} 
       </div>
       </div>
     }) : "You have no reservations! You should really treat yourself today!"

@@ -43,7 +43,13 @@ class Restaurant extends Component{
     daysNumber: [],
     openFrom: '',
     openTill: '',
-    disabledTimes: []
+    disabledTimes: [],
+    colorModal: "danger",
+    isErrorModal: false,
+    messageModal: '',
+    isSuccessReserve: false,
+    messageReserve: "",
+    colorReserve: "success"
   }
 
   constructor(props) {
@@ -51,6 +57,8 @@ class Restaurant extends Component{
     this.componentDidMount = this.componentDidMount.bind(this);
     this.getDataFromDb = this.getDataFromDb.bind(this);
     this.onDismissSuccess = this.onDismissSuccess.bind(this);
+    this.onDismissErrorModal = this.onDismissErrorModal.bind(this);
+    this.onDismissSuccessReserve = this.onDismissSuccessReserve.bind(this);
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -112,22 +120,19 @@ class Restaurant extends Component{
       }
       const midnight = new Date();
       midnight.setHours(23,59,0,0);
-      console.log(midnight);
       loop = setMinutes(closeTime, closeTime.getMinutes() + 30);
-      console.log(loop);
       while (loop < midnight){
-        console.log(loop);
         disableTime.push(loop);
         loop = setMinutes(loop, loop.getMinutes() + 30);
       }
     }
     this.setState({ disabledTimes: disableTime});
   }
-  openTime(time){
+  openTime(time, date = new Date()){
     var Time = time.split(':');
     var hours = Time[0];
     var mins = Time[1];
-    return setHours(setMinutes(new Date(), mins), hours);
+    return setHours(setMinutes(date, mins), hours);
   }
 
   //function to contain the fetch
@@ -201,6 +206,14 @@ class Restaurant extends Component{
     this.setState({ isSuccess: false });
   }
 
+  onDismissSuccessReserve() {
+    this.setState({ isSuccessReserve: false });
+  }
+
+  onDismissErrorModal() {
+    this.setState({ isErrorModal: false });
+  }
+
   handleNewReview = async (e) => {
     e.preventDefault();
     this.setState({isSaving: true});
@@ -248,6 +261,75 @@ class Restaurant extends Component{
     });
   }
 
+  confirmReservation = async (e) => {
+    e.preventDefault();
+    this.setState({isSaving: true});
+    console.log(this.state.reserveDate);
+    var a = this.state.reserveDate.getTime() > this.openTime(this.state.openTill,this.state.reserveDate).getTime();
+    console.log(a);
+    a = this.state.reserveDate.getTime() < this.openTime(this.state.openFrom,this.state.reserveDate).getTime();
+    console.log(a);
+    var today = new Date();
+    if (this.state.reserveDate === null){
+      this.setState({ isErrorModal: true,
+        messageModal: "Please enter a date",
+        colorModal: "danger"
+      });
+    }
+    else if (this.state.reserveDate.getDate() <= today.getDate()){
+      this.setState({ isErrorModal: true,
+        messageModal: "Reservations can only be made for future dates",
+        colorModal: "danger"
+      });
+    }
+    else if (!this.isOpen(this.state.reserveDate)){
+      this.setState({ isErrorModal: true,
+        messageModal: "Restaurant is not open on this day",
+        colorModal: "danger"
+      });
+    }
+    else if ((this.state.reserveDate.getTime() < this.openTime(this.state.openFrom,this.state.reserveDate).getTime()) ||
+    (this.state.reserveDate.getTime() > this.openTime(this.state.openTill,this.state.reserveDate).getTime())){
+      this.setState({ isErrorModal: true,
+        messageModal: "Restaurant is not open at this time",
+        colorModal: "danger"
+      });
+    }
+    else{
+      if (window.confirm('Are you sure you wish to confirm this Reservation?')){
+        const response = await fetch('/restaurant/reserve/'+this.state.id, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_id: this.state.user_id, // name
+            user_name:this.state.user_name, // password
+            rest_name:this.state.Name, //restaurant Name
+            date: this.state.reserveDate
+          }),
+        });
+        const body = await response.text();
+        if (body === SUCCESSMESSAGE){
+          this.setState({ isSuccessReserve: true,
+            messageReserve: "Your reservation is confirmed",
+            colorReserve: "success",
+            reserveDate: setHours(new Date(),24)
+          });
+          this.closeModal();
+        }
+        else{
+          this.setState({ isErrorModal: true,
+            messageModal: "Issue updating review. Please try again",
+            colorModal: "danger"
+          });
+        }
+      }
+    }
+    this.setState({
+      isSaving: false
+    });
+  }
 
   render() {
     var link = "/Login?redirect=/restaurant/"+this.state.id;
@@ -284,12 +366,15 @@ class Restaurant extends Component{
     id = "TermsModal"
     >
     <h3>Reserve a table at {this.state.Name}</h3>
+    <Alert color={this.state.colorModal} isOpen={this.state.isErrorModal} toggle={this.onDismissErrorModal}>
+    {this.state.messageModal}
+    </Alert>
     <div id="box">
     <div id="model-left-reserve">
-    <form>
+    <form onSubmit={this.confirmReservation}>
     Choose your reservation date & time
     <br/>
-    <span id="warningmessage"> *Dates and times that are not selectable are outside the hours of operation of the restaurant </span>
+    <span id="warningmessage"> *Dates and times that are not selectable are outside the hours of operation of this restaurant </span>
     <br/>
     <DatePicker id="resDatePicker"
         selected={this.state.reserveDate}
@@ -366,8 +451,10 @@ class Restaurant extends Component{
       <div className="row justify-content-center">
       <h3 className="form-title">{this.state.Name}</h3>
       </div>
+      <Alert color={this.state.colorReserve} isOpen={this.state.isSuccessReserve} toggle={this.onDismissReserve}>
+      {this.state.messageReserve}
+      </Alert>
       <div className="row justify-content-center">
-
       </div>
       <div className="row justify-content-center">
       <div className="descript">

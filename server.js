@@ -133,6 +133,41 @@ app.post('/restaurant/review/:id',function (req, res){
 });
 ////////SET REVIEW FOR ONE RESTAURANT ENDDDDD
 
+////////SET RESERVATION FOR ONE RESTAURANT
+app.post('/restaurant/reserve/:id',function (req, res){
+  var dbo = db.db(DATABASE_NAME);
+  var searchTerm = { id: parseInt(req.params.id) };
+  const updateReserve = {
+    user_id: req.body.user_id, // name
+    user_name:req.body.user_name, // password
+    date: req.body.date
+  };
+  //update the reviews in the restaurant collection
+  dbo.collection(RESTAURANT_COLLECTION).updateOne(searchTerm, {$addToSet: {Reserve: updateReserve}}, function(err, result) {
+    if (err)
+    return res.send('Error');
+    else{
+      var userTerm = {email: req.body.user_id};
+      const updateUserReserve = {
+        restName: req.body.rest_name, // name
+        restID: parseInt(req.params.id), // password
+        date: req.body.date
+      };
+      dbo.collection(USER_COLLECTION).updateOne(userTerm, {$addToSet: {Reserve: updateUserReserve}}, function(err, result) {
+        if (err){
+          //also update the reviews in the user collection for their profile
+          return res.send('Error');
+        }
+        else {
+          //return success only if everything is updated
+          return res.send('Success');
+        }
+      });
+    }
+  });
+});
+////////SET RESERVATION FOR ONE RESTAURANT ENDDDDD
+
 MongoClient.connect(CONNECTION_URL, function (err, database) {
   if (err)
   throw err
