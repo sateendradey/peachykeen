@@ -5,7 +5,7 @@ import moment from 'moment';
 
 class Admin extends Component {
   state = {
-    isLoggedOn: true,
+    isLoggedOn: false,
     userid: '',
     password: '',
     isSuccess: false,
@@ -18,7 +18,6 @@ class Admin extends Component {
 
   constructor(props){
     super(props);
-    this.getDataFromDb();
   }
 
   getDataFromDb = async () => {
@@ -50,9 +49,9 @@ class Admin extends Component {
     e.preventDefault();
     if (this.state.userid === "admin" && this.state.password === "password"){
       this.setState({ isLoggedOn:true,
-        message: "Login successful! Redirecting now!",
-        isSuccess: true,
-        color: 'success'
+        message:'',
+        userid: '',
+        password: '',
       });
       this.getDataFromDb();
     }
@@ -191,6 +190,16 @@ class Admin extends Component {
 
     var AdminDetails = <section className="profile">
     <div className="admin">
+    <div className="row">
+    <div class="col-10">
+
+    </div>
+    <div class="col-2">
+    <Link onClick={e => this.setState({ isLoggedOn: false })}>
+    <span className="form-link">Logoff Admin!</span>
+    </Link>
+    </div>
+    </div>
     <div className="row">
     <h3 className="form-title">Admin Portal</h3>
     </div>
