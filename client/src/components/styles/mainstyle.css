@@ -197,6 +197,7 @@ h4{
 
 #carouselRestaurant{
 	width: 75%;
+	background: #f8f8f8;
 }
 
 .carousel-control-prev-icon{
@@ -206,7 +207,18 @@ h4{
 	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%f' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3e%3c/svg%3e")
 }
 .carousel-inner img{
-	max-height: 40vh;
+	max-height: 20vh;
 	width: 100%;
 	object-fit: scale-down;
+}
+
+@media (min-width: 600px) {
+	.carousel-inner img{
+		max-height: 40vh;
+		object-fit: scale-down;
+	}
+	#carouselRestaurant{
+		width: 60%;
+		background: #f8f8f8;
+	}
 }

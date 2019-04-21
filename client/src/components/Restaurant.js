@@ -32,7 +32,7 @@ class Restaurant extends Component{
     newReview: '',
     email: '',
     isAuthenticated: false,
-    isLoading: false,
+    isLoading: true,
     isSaving: false,
     isSuccess: false,
     color: "danger",
@@ -145,7 +145,7 @@ class Restaurant extends Component{
 
     var isAuthenticated = sessionStorage.getItem("isAuthenticated");
     this.userHasAuthenticated(isAuthenticated);
-    this.setState({ isLoading: false});
+    //this.setState({ isLoading: false});
   }
 
 
@@ -154,7 +154,7 @@ class Restaurant extends Component{
     var requestUrl = "/restaurants/" + this.props.match.params.id;
     const response = await fetch(requestUrl);
     const body = await response.json();
-    this.setState({ Name: body.Name,
+    await this.setState({ Name: body.Name,
       id: body.id,
       Reviews: Array.from(body.Reviews),
       Rating:body.Rating,
@@ -336,7 +336,7 @@ class Restaurant extends Component{
 
   render() {
     var link = "/Login?redirect=/restaurant/"+this.state.id;
-    var Carousel = <div id="carouselRestaurant" className="carousel slide" data-ride="carousel">
+    var Carousel = <div id="carouselRestaurant" className="carousel slide rounded" data-ride="carousel">
     <ol className="carousel-indicators">
     {
       this.state.images ? this.state.images.map(function(image, index){
@@ -473,6 +473,16 @@ class Restaurant extends Component{
 
     var WriteReview = this.state.isAuthenticated ? LoginScreen : <div>Please <a href={link}> Login </a> to write a review</div>;
 
+    var LoadButton = <LoaderButton
+    block = "true"
+    bssize="large"
+    type="submit"
+    isLoading={this.state.isLoading}
+    text="Login"
+    loadingText="Data Loading"
+    id = "DataLoad"
+    />
+
     return (
       <div className="App">
       <section className="profile">
@@ -486,7 +496,7 @@ class Restaurant extends Component{
       <div className="row justify-content-center">
       </div>
       <div className="row justify-content-center">
-      {this.state.images ? Carousel : null}
+      {this.state.isLoading ? LoadButton : this.state.images ? Carousel : null}
       </div>
       <div className="row justify-content-center">
       <div className="descript">
