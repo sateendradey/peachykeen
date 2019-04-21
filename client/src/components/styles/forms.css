@@ -135,13 +135,14 @@ input, select, textarea {
   -ms-appearance: unset !important; }
 
   /*HERE*/
-select{
-  outline: none;
-  appearance: menulist !important;
-  -moz-appearance: menulist !important;
-  -webkit-appearance: menulist !important;
-  -o-appearance: menulist !important;
-  -ms-appearance: menulist !important; }
+  select{
+    outline: none;
+    appearance: menulist !important;
+    -moz-appearance: menulist !important;
+    -webkit-appearance: menulist !important;
+    -o-appearance: menulist !important;
+    -ms-appearance: menulist !important;
+  }
 
 input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   appearance: none !important;

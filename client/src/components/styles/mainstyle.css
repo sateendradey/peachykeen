@@ -13,7 +13,7 @@
 .form-title{
     line-height: 1.66;
     margin: 0.8vh 0 0.2vh 0;
-    padding: 0;
+    padding-top: 2vh;
     font-weight: bold;
     color: #222;
     font-family: Poppins;
@@ -177,4 +177,20 @@ h4{
 #reserveButton{
 	background-color: indigo;
 	border-color: indigo;
+	margin-bottom: 2vh;
+}
+
+#reserveTable{
+	margin-top: 2vh;
+	width: 90%;
+	padding-bottom: 2vh;
+}
+
+.admin{
+	margin-left: 10vh;
+}
+
+.form-link{
+	text-decoration: underline;
+	color: dodgerblue;
 }

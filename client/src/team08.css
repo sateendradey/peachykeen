@@ -19,6 +19,7 @@ body{
 
 section {
 	margin: 0 auto;
+
 }
 
 .brand-text{
@@ -363,30 +364,36 @@ footer{
 }
 
 #peaches_logo{
-	max-width: 200px;
+	max-width: 20vh;
+}
+
+@media (min-width:780px){
+	#model-left-reserve{
+		float: left;
+		height: auto;
+	}
+	#model-right-reserve{
+		float:right;
+		height: auto;
+	}
 }
 
 #box{
-	display: inline-block;
+	display: block;
+	width: 100%;
 }
 
-#model-left-reserve{
-	float: left;
-	height: auto;
-}
-
-#model-right-reserve{
-	float: right;
-	padding-left: 2vh;
-	height: auto;
-}
 
 #resDatePicker{
-	width: 150%;
+	width: 120%;
 }
 
 #warningmessage{
 	color:red;
 	font-size: 0.5em;
 	line-height: 0.5;
+}
+
+#admin-login{
+	margin-top: 10%;
 }

@@ -95,6 +95,16 @@ app.get('/restaurants/:id',function (req, res){
   });
 });
 ////////GET DATA FOR ONE RESTAURANT ENDDDDDDD
+////////GET DATA FOR ONE RESTAURANT BY NAME
+app.get('/restaurantName/:name',function (req, res){
+  var dbo = db.db(DATABASE_NAME);
+  var searchTerm = { Name: req.params.name };
+  dbo.collection(RESTAURANT_COLLECTION).findOne(searchTerm, function(err, result) {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+////////GET DATA FOR ONE RESTAURANT BY NAME ENDDDDDDD
 
 ////////SET REVIEW FOR ONE RESTAURANT
 app.post('/restaurant/review/:id',function (req, res){

@@ -111,7 +111,7 @@ class Restaurant extends Component{
       }
     }
     else{
-      var loop = new Date();
+      loop = new Date();
       loop.setHours(0,0,0,0);
       while (loop < openTime){
 
@@ -170,7 +170,7 @@ class Restaurant extends Component{
       openTill: body.Hours[1]
     });
     var arrDays =[];
-    this.state.Days.map(function(day){
+    this.state.Days.map((day) => {
       switch(day) {
         case "M":
         arrDays.push(1);
@@ -196,6 +196,7 @@ class Restaurant extends Component{
         default:
         break;
       }
+      return 0;
     });
     this.setState({ daysNumber: arrDays });
     this.setDisabledTimes();

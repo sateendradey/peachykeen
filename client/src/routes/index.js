@@ -10,6 +10,7 @@ import Profile from "../components/Profile";
 import AuthenticatedRoute from "../components/AuthenticatedRoute";
 import UnauthenticatedRoute from "../components/UnauthenticatedRoute";
 import Restaurant from '../components/Restaurant';
+import Admin from '../components/Admin'
 
 
 
@@ -23,6 +24,7 @@ const Routes = ({ childProps }) => (
     <AppliedRoute exact path="/restaurant/:id" exact component={Restaurant} props={childProps} />
     <AuthenticatedRoute exact path="/profile/:email" exact component={Profile} props={childProps} />
     <AuthenticatedRoute exact path="/profile" exact component={Profile} props={childProps} />
+    <AppliedRoute exact path="/admin" exact component={Admin} props={childProps} />
     <Route component={NotFound} />
   </Switch>
 );
