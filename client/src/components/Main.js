@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
-
+import moment from 'moment';
 class Main extends Component {
-
-	state = {
-		restaurants: [],
-		selectedRestaurant: '',
-		isLoading: false,
-		data: [],
-	};
 
 	constructor(props) {
 		super(props);
 		this.componentDidMount = this.componentDidMount.bind(this);
 		this.getDataFromDb = this.getDataFromDb.bind(this);
-		this.pickedRestaurant = this.pickedRestaurant.bind(this);
+		this.render = this.render.bind(this);
 		this.state = {
 			restaurants: [],
 			selectedRestaurant: '',
@@ -27,7 +20,8 @@ class Main extends Component {
 			restaurantCity: '',
 			restaurantState:'',
 			detailsHidden:true,
-			restaurantId:''
+			restaurantId:'',
+			Days: []
 		};
 	}
 
@@ -44,39 +38,14 @@ class Main extends Component {
 		const body = await response.json();
 		this.setState({data: body});
 		var names = Array.from(body).map(names => names.Name);
-		this.setState({restaurantNames: names,
-									  isLoading: false});
-	};
+		var days = Array.from(body).map(days=>days.Days)
+		var hrs = Array.from(body).map(hrs=>hrs.Hours)
+		this.setState({
+			restaurantNames: names,
+			  isLoading: false,
+				Days: days});
 
-	pickedRestaurant(selectedRestaurant) {
-		this.setState({ isLoading: true});
-		//selected Name
-		this.setState({detailsOpen: false});
-		const lclrest = selectedRestaurant.target.value;
-		this.setState({selectedRestaurant: lclrest});
-		//Selected Mood
-		const lclDataArray = this.state.data.filter(mood=>mood.Name === lclrest);
-		var lclMood = lclDataArray[0].Mood;
-		this.setState({restaurantMood:lclMood});
-		//Selected Rating
-		var lclRating = lclDataArray[0].Rating;
-		this.setState({restaurantRating: lclRating});
-		//Selected Reviews
-		var lclReviews = lclDataArray[0].Reviews;
-		this.setState({restaurantReviews: lclReviews});
-		//Selected City
-		var lclCity = lclDataArray[0].City;
-		this.setState({restaurantCity: lclCity});
-		//Selected state
-		var lclState = lclDataArray[0].State;
-		this.setState({restaurantState: lclState});
-		//ID
-		var lclId = lclDataArray[0]._id;
-		this.setState({restaurantId: lclId});
-		this.setState({detailsOpen: true});
-		this.setState({detailsHidden: false});
-		this.setState({ isLoading: false});
-	}
+	};
 
 	render() {
 		//populates the select
@@ -85,13 +54,14 @@ class Main extends Component {
 			return <option value={name}>{name}</option>
 		})
 		: '';
+
+		//populates the select
+
+
 		//populates the reviews
-		var reviews = this.state.restaurantReviews?
-		this.state.restaurantReviews.map(function(review){
-			return <li value={review}>{review}</li>
-		})
-		:'';
+
 		//variables to hold the state to display
+
 		var selectedName = this.state.selectedRestaurant;
 		var selectedMood = this.state.restaurantMood;
 		var selectedRating = this.state.restaurantRating;
@@ -100,7 +70,51 @@ class Main extends Component {
 		var detailsHidden = this.state.detailsHidden;
 		var detailsOpen = this.state.detailsOpen;
 		var selectedId = this.state.restaurantId;
+		var lcldata = this.state.data;
 
+
+		const cards = this.state.data.map(function(card){
+			var DaysOfWeek = card.Days.map(function(day){
+						switch(day) {
+							case "M":
+							return <span className="numberCircle"> M </span>
+							case "T":
+							return <span className="numberCircle"> T </span>
+							case "W":
+							return <span className="numberCircle"> W </span>
+							case "R":
+							return <span className="numberCircle"> Th </span>
+							case "F":
+							return <span className="numberCircle"> F </span>
+							case "Sa":
+							return <span className="numberCircle"> Sa </span>
+							case "S":
+							return <span className="numberCircle"> S </span>
+							default:
+							return "";
+						}
+					});
+			var restLink = '/restaurant/'+card.id;
+			var openAt = moment(card.Hours[0], 'HH:mm').format('h:mm A');
+			var closeAt = moment(card.Hours[1], 'HH:mm').format('h:mm A');
+			return (
+			<div class="card">
+			<div class="card-header" style={{color: 'black'}}>
+    	{card.Name}
+  		</div>
+	 <div class = 'card-body' style={{maxwidth: '25rem', color: 'black'}}>
+	 <h5>{card.Type}</h5>
+	 <h5>{card.Mood}</h5>
+	 	<i class= "em em-peach" title ='Peachy Rating'></i>{card.Rating}
+		<div>
+		<a href={restLink} class="btn btn-primary">Favorite!</a>
+	 </div>
+	 {card.Bar}
+	 <div><span className='caption' style={{width:'100%'}}>{DaysOfWeek}</span></div>
+	 <span> {openAt} to {closeAt} </span>
+	 </div>
+	 </div>)
+ });
 
 		return (
 			<React.Fragment>
@@ -109,20 +123,11 @@ class Main extends Component {
 			<div class="restaurant-content">
 			<form style = {{width:'100%', textAlign: 'center'}}>
 			<h1 class="restaurant-header"> All Restaurants!</h1>
-			<select className="form-control" id="restaurants-name" onChange={this.pickedRestaurant} style = {{width:'100%', textAlign: 'center'}}>
-			<option value="" selected>Select A Restaurant</option>{options}
-			</select>
-
-			<details id="restaurantDeets" open={detailsOpen} value = {selectedName} hidden={detailsHidden}>
-			{selectedName}
-			<p id="restaurantMood">{selectedMood}</p>
-			<p id="restaurantRating" >{selectedRating} Outta 5</p>
-			<p id="restaurantReviews"><strong>Reviews</strong></p>
-			<p id="restaurantId">ID: {selectedId}</p>
-			<ul id="restaurantReviewsText" style= {{listStyleType:'none'}} >{reviews}</ul>
-			<address id="restaurantAddress">{selectedCity}, {selectedState}</address>
-			</details>
+			<div class="card-columns">
+			{cards}
+			</div>
 			</form>
+
 			</div>
 			</div>
 			</div>
