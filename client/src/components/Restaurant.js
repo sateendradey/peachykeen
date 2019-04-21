@@ -49,7 +49,8 @@ class Restaurant extends Component{
     messageModal: '',
     isSuccessReserve: false,
     messageReserve: "",
-    colorReserve: "success"
+    colorReserve: "success",
+    images: []
   }
 
   constructor(props) {
@@ -167,7 +168,8 @@ class Restaurant extends Component{
       Address1: body.Street,
       Address2: body.City +", "+ body.State+" "+body.Zip,
       openFrom: body.Hours[0],
-      openTill: body.Hours[1]
+      openTill: body.Hours[1],
+      images: body.Images ? Array.from(body.Images):null
     });
     var arrDays =[];
     this.state.Days.map((day) => {
@@ -334,6 +336,32 @@ class Restaurant extends Component{
 
   render() {
     var link = "/Login?redirect=/restaurant/"+this.state.id;
+    var Carousel = <div id="carouselRestaurant" className="carousel slide" data-ride="carousel">
+    <ol className="carousel-indicators">
+    {
+      this.state.images ? this.state.images.map(function(image, index){
+        return <li data-target="#carouselRestaurant" data-slide-to={index} key={index} className={index === 0 ? "active":null}></li>
+      }):null
+    }
+    </ol>
+    <div className="carousel-inner">
+    {
+      this.state.images ? this.state.images.map(function(image, index){
+        return <div className={index === 0 ? "carousel-item active":"carousel-item"}>
+              <img className="rounded" src={"data:image/jpeg;base64,"+image.image} alt="Slide"/>
+        </div>
+      }):null
+    }
+    </div>
+    <a className="carousel-control-prev" href="#carouselRestaurant" role="button" data-slide="prev">
+    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span className="sr-only">Previous</span>
+    </a>
+    <a className="carousel-control-next" href="#carouselRestaurant" role="button" data-slide="next">
+    <span className="carousel-control-next-icon" aria-hidden="true"></span>
+    <span className="sr-only">Next</span>
+    </a>
+    </div>
     //Create graphic for each day of the week restaurant is open
     var DaysOfWeek = this.state.Days.map(function(day){
       switch(day) {
@@ -378,16 +406,16 @@ class Restaurant extends Component{
     <span id="warningmessage"> *Dates and times that are not selectable are outside the hours of operation of this restaurant </span>
     <br/>
     <DatePicker id="resDatePicker"
-        selected={this.state.reserveDate}
-        onChange={this.handleChangeReserve}
-        minDate={setHours(new Date(),24)}
-        excludeTimes={this.state.disabledTimes}
-        filterDate={ this.isOpen }
-        showTimeSelect
-        timeFormat="HH:mm"
-        timeIntervals={30}
-        dateFormat="EEEE, MMMM d, yyyy h:mm aa"
-        timeCaption="Time"
+    selected={this.state.reserveDate}
+    onChange={this.handleChangeReserve}
+    minDate={setHours(new Date(),24)}
+    excludeTimes={this.state.disabledTimes}
+    filterDate={ this.isOpen }
+    showTimeSelect
+    timeFormat="HH:mm"
+    timeIntervals={30}
+    dateFormat="EEEE, MMMM d, yyyy h:mm aa"
+    timeCaption="Time"
     />
     <br/>
     <br/>
@@ -450,12 +478,15 @@ class Restaurant extends Component{
       <section className="profile">
       <div className="profile-details">
       <div className="row justify-content-center">
-      <h3 className="form-title">{this.state.Name}</h3>
+      <h1 className="form-title">{this.state.Name}</h1>
       </div>
       <Alert color={this.state.colorReserve} isOpen={this.state.isSuccessReserve} toggle={this.onDismissReserve}>
       {this.state.messageReserve}
       </Alert>
       <div className="row justify-content-center">
+      </div>
+      <div className="row justify-content-center">
+      {this.state.images ? Carousel : null}
       </div>
       <div className="row justify-content-center">
       <div className="descript">
