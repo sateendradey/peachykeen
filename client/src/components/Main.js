@@ -70,7 +70,7 @@ class Main extends Component {
 				if (restaurant.Mood === this.state.selectedMood)
 					newData.push(restaurant);
 			});
-			this.setState({data: newData});			
+			this.setState({data: newData});
 		}
   }
 
@@ -105,7 +105,7 @@ class Main extends Component {
 				<div className="card-content">
 				<div className="card-body" style={{color: 'black'}}>
 				<a href={restLink}> <span className="customH4 card-title">{card.Name}</span> </a>
-				<h6 classNAme="card-subtitle text-muted"><i className= "em em-peach" title ='Peachy Rating'></i>{card.Rating}</h6>
+				<h6 className="card-subtitle text-muted"><i className= "em em-peach" title ='Peachy Rating'></i>{card.Rating}</h6>
 				</div>
 				{
 					card.Images && card.Images.length > 0 ?
@@ -142,7 +142,7 @@ class Main extends Component {
 			/>
 
 			var MoodOptions = <div className="col-3" id="mooddrop">
-			<select className = "form-control" value={this.state.selectedMood} onChange={this.handleChange}>
+			<select id="mooddropbox" className = "form-control" value={this.state.selectedMood} onChange={this.handleChange}>
 			<option value="-1">Anything!</option>
 			{
 				this.state.Moods.map(mood => {
@@ -155,19 +155,21 @@ class Main extends Component {
 				<React.Fragment>
 				<div className = "App">
 				<div className="restaurant-content">
-				<div className="restaurant-header">
-				<div id = "image_div">
-				<img src={logo} alt="Peaches Logo" />
-				</div>
-				<h1> Welcome to Peachy Keen!</h1>
-				</div>
-				<div className="restaurant-header">
-				<p> What are you in the mood for? </p>
-				{MoodOptions}
-				</div>
-				<div className="row match-height">
-				{this.state.isLoading ? LoadButton : cards}
-				</div>
+					<div className="container">
+					<div className="restaurant-header">
+						<div id = "image_div">
+							<img src={logo} alt="Peaches Logo" />
+						</div>
+						<h1> Welcome to Peachy Keen!</h1>
+					</div>
+					<div className="restaurant-header">
+						<p className="card-text"> What are you in the mood for? </p>
+						{MoodOptions}
+					</div>
+					</div>
+					<div className="row match-height">
+						{this.state.isLoading ? LoadButton : cards}
+					</div>
 				</div>
 				</div>
 				</React.Fragment>

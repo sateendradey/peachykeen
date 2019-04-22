@@ -226,6 +226,7 @@ h4{
 #image_div{
 	max-width: 20vh;
 	margin: 0 auto;
+	padding-top: 2%;
 }
 
 .restaurant-content{
@@ -304,4 +305,11 @@ h4{
 
 #mooddrop{
 	margin: 0 auto;
+	padding-bottom: 5%;
+}
+
+#mooddropbox{
+	outline: none;
+	border: none;
+	border-bottom: 1px dashed green;
 }

@@ -76,6 +76,11 @@ class App extends Component {
           Profile
           </a>
           </li>
+          <li className="nav-item">
+          <a className="nav-link men" href="/Admin" aria-label="Admin">
+          Admin
+          </a>
+          </li>
           </ul>
           {this.state.isAuthenticated
             ? <React.Fragment>
