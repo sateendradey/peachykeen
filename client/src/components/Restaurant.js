@@ -267,19 +267,16 @@ class Restaurant extends Component{
   confirmReservation = async (e) => {
     e.preventDefault();
     this.setState({isSaving: true});
-    console.log(this.state.reserveDate);
-    var a = this.state.reserveDate.getTime() > this.openTime(this.state.openTill,this.state.reserveDate).getTime();
-    console.log(a);
-    a = this.state.reserveDate.getTime() < this.openTime(this.state.openFrom,this.state.reserveDate).getTime();
-    console.log(a);
+    console.log(this.state.reserveDate.getDate());
     var today = new Date();
+    console.log(today.getDate());
     if (this.state.reserveDate === null){
       this.setState({ isErrorModal: true,
         messageModal: "Please enter a date",
         colorModal: "danger"
       });
     }
-    else if (this.state.reserveDate.getDate() <= today.getDate()){
+    else if (this.state.reserveDate <= today){
       this.setState({ isErrorModal: true,
         messageModal: "Reservations can only be made for future dates",
         colorModal: "danger"
