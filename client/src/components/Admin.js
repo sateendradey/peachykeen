@@ -16,10 +16,6 @@ class Admin extends Component {
     select: 'Reserves'
   }
 
-  constructor(props){
-    super(props);
-  }
-
   getDataFromDb = async () => {
     this.setState({ isLoading: true });
     var response = "";

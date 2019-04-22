@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import LoaderButton from "./LoaderButton";
+import logo from './img/Peach-Logo.png';
+
 class Main extends Component {
 
 	constructor(props) {
@@ -42,98 +45,102 @@ class Main extends Component {
 		var hrs = Array.from(body).map(hrs=>hrs.Hours)
 		this.setState({
 			restaurantNames: names,
-			  isLoading: false,
-				Days: days});
-
+			isLoading: false,
+			Days: days
+		});
 	};
 
 	render() {
 		//populates the select
 		var options = this.state.restaurantNames?
-		this.state.restaurantNames.map(function(name){
-			return <option value={name}>{name}</option>
+		this.state.restaurantNames.map(function(name, index){
+			return <option key={index} value={name}>{name}</option>
 		})
 		: '';
-
-		//populates the select
-
-
-		//populates the reviews
-
-		//variables to hold the state to display
-
-		var selectedName = this.state.selectedRestaurant;
-		var selectedMood = this.state.restaurantMood;
-		var selectedRating = this.state.restaurantRating;
-		var selectedCity = this.state.restaurantCity;
-		var selectedState = this.state.restaurantState;
-		var detailsHidden = this.state.detailsHidden;
-		var detailsOpen = this.state.detailsOpen;
-		var selectedId = this.state.restaurantId;
-		var lcldata = this.state.data;
-
-
-		const cards = this.state.data.map(function(card){
+		const cards = this.state.data ? this.state.data.map(function(card){
+			console.log(card);
 			var DaysOfWeek = card.Days.map(function(day){
-						switch(day) {
-							case "M":
-							return <span className="numberCircle"> M </span>
-							case "T":
-							return <span className="numberCircle"> T </span>
-							case "W":
-							return <span className="numberCircle"> W </span>
-							case "R":
-							return <span className="numberCircle"> Th </span>
-							case "F":
-							return <span className="numberCircle"> F </span>
-							case "Sa":
-							return <span className="numberCircle"> Sa </span>
-							case "S":
-							return <span className="numberCircle"> S </span>
-							default:
-							return "";
-						}
-					});
+				switch(day) {
+					case "M":
+					return <span className="numberCircle"> M </span>
+					case "T":
+					return <span className="numberCircle"> T </span>
+					case "W":
+					return <span className="numberCircle"> W </span>
+					case "R":
+					return <span className="numberCircle"> Th </span>
+					case "F":
+					return <span className="numberCircle"> F </span>
+					case "Sa":
+					return <span className="numberCircle"> Sa </span>
+					case "S":
+					return <span className="numberCircle"> S </span>
+					default:
+					return "";
+				}
+			});
 			var restLink = '/restaurant/'+card.id;
 			var openAt = moment(card.Hours[0], 'HH:mm').format('h:mm A');
 			var closeAt = moment(card.Hours[1], 'HH:mm').format('h:mm A');
 			return (
-			<div class="card">
-			<div class="card-header" style={{color: 'black'}}>
-    	{card.Name}
-  		</div>
-	 <div class = 'card-body' style={{maxwidth: '25rem', color: 'black'}}>
-	 <h5>{card.Type}</h5>
-	 <h5>{card.Mood}</h5>
-	 	<i class= "em em-peach" title ='Peachy Rating'></i>{card.Rating}
-		<div>
-		<a href={restLink} class="btn btn-primary">Favorite!</a>
-	 </div>
-	 {card.Bar}
-	 <div><span className='caption' style={{width:'100%'}}>{DaysOfWeek}</span></div>
-	 <span> {openAt} to {closeAt} </span>
-	 </div>
-	 </div>)
- });
+				<div className="col-lg-4 col-md-6 col-sm-12">
+				<div className="card">
+				<div className="card-content">
+				<div className="card-body" style={{color: 'black'}}>
+				<a href={restLink}> <span class="customH4 card-title">{card.Name}</span> </a>
+				<h6 class="card-subtitle text-muted"><i className= "em em-peach" title ='Peachy Rating'></i>{card.Rating}</h6>
+				</div>
+				{
+					card.Images && card.Images.length > 0 ?
+				 	<a href={restLink}><img class="img-fluid" src={"data:image/jpeg;base64,"+card.Images[0].image} alt={card.Name}/></a>
+					: null
+			  }
+				<div className = 'card-body'>
+				<p class="card-text">
+				<i class="fas fa-grin-hearts" title="Mood"></i>  {card.Mood}
+				<i class="fas fa-utensils" title="Restaurant Type"></i>    {card.Type}
+				</p>
+				<div>
+				<span className='caption' style={{width:'100%'}}>{DaysOfWeek}</span>
+				</div>
+				<span className="card-text"> {openAt} to {closeAt} </span>
+				<div className = "rightSide">
+				<a href={restLink} className="btnHeart"><i class="fas fa-heart" tite="favorite"></i></a>
+				</div>
+				</div>
+				</div>
+				</div>
+				</div>
+			)
+		}):null;
 
-		return (
-			<React.Fragment>
-			<div class = "App">
-			<div class= "container">
-			<div class="restaurant-content">
-			<form style = {{width:'100%', textAlign: 'center'}}>
-			<h1 class="restaurant-header"> All Restaurants!</h1>
-			<div class="card-columns">
-			{cards}
-			</div>
-			</form>
-
-			</div>
-			</div>
-			</div>
-			</React.Fragment>
-		);
+			var LoadButton = <LoaderButton
+			block = "true"
+			bssize="large"
+			type="submit"
+			isLoading={this.state.isLoading}
+			text="Login"
+			loadingText="Data Loading"
+			id = "DataLoad"
+			/>
+			return (
+				<React.Fragment>
+				<div className = "App">
+				<div className="restaurant-content">
+				<div className="restaurant-header">
+				<div id = "image_div">
+				<img src={logo} alt="Peaches Logo" />
+				</div>
+				<h1> Welcome to Peachy Keen!</h1>
+				</div>
+				<div className="row match-height">
+				{this.state.isLoading ? LoadButton : cards}
+				</div>
+				</div>
+				</div>
+				</React.Fragment>
+			);
+		}
 	}
-}
 
-export default Main;
+	export default Main;
