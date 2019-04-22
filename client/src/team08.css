@@ -7,13 +7,13 @@
 }
 
 body{
-	background-color: white; /*#fdf5e6;*/
+	background-color: #f8f8f8; /*#fdf5e6;*/
 	/* We are using 100% of whatever the viewport renders. This makes the webpage truly responsive. Also, our design wants to span the entire page that's available for the header
 	footer and images. To determine the percentages we started with the value 1140px*/
 	width:100%;
 	height: 100%;
 	line-height: 1.5;
-	padding-top: 4%;
+	padding-top: 20%;
 	margin: 0 auto;
 }
 
@@ -65,9 +65,61 @@ section {
 
 }
 
+#landing_image img{
+	-webkit-appearance: none;
+	width: 100%; /*needs to cover the entire width of the screen*/
+	height: 55.6230589875vh; /* Header covers 10% of the screen, So for the remainder 90%, this value presents the golden ratio! (90/55.62 ~ 1.61) */
+	/* Using the following tags to crop the image so interesting parts are only shown, also using filters to make it match our color scheme */
+	object-fit: cover;
+	object-position: 10% 40%;
+	/* Came to these values using experimentation */
+	margin-top: -12%;
+
+}
+/* All the about us stuff */
+#about{
+	width: 95%; /*more space on mobile*/
+	padding-top: 4%; /* as this value is linked to the width and not the height of the parent, decided on the value visually */
+	text-align: center;
+}
+
+#contact{
+	width: 95%; /*more space on mobile*/
+	padding-top: 4%; /* as this value is linked to the width and not the height of the parent, decided on the value visually */
+}
+
+
 @media (min-width: 650px) {
 	body{
+		padding-top: 5%;
+	}
+	#landing_image img{
+		margin-top: -8%;
+	}
+	#about{
+		width: 61.803398875%; /*Golden ratio for the 100% width* (100/61.8 ~ 1.61) equates to 704.558747175px/1140 = 61.803398875%  */
+		padding-top: 4%; /* as this value is linked to the width and not the height of the parent, decided on the value visually */
+	}
+	#contact{
+		width: 61.803398875%; /* Same as about, golden ratio for 100% 704.558747175px/1140 = 61.803398875% */
+		padding-top: 4%; /* as this value is linked to the width and not the height of the parent, decided on the value visually */
+	}
+}
+
+@media (min-width: 900px) {
+	body{
 		padding-top: 2%;
+	}
+	#landing_image img{
+		margin-top: -2%;
+	}
+	#about{
+		width: 61.803398875%; /*Golden ratio for the 100% width* (100/61.8 ~ 1.61) equates to 704.558747175px/1140 = 61.803398875%  */
+		padding-top: 4%; /* as this value is linked to the width and not the height of the parent, decided on the value visually */
+	}
+	#contact{
+		width: 61.803398875%; /* Same as about, golden ratio for 100% 704.558747175px/1140 = 61.803398875% */
+		padding-top: 4%; /* as this value is linked to the width and not the height of the parent, decided on the value visually */
 	}
 }
 
@@ -83,24 +135,10 @@ section {
 }
 
 
-#landing_image img{
-	-webkit-appearance: none;
-	width: 100%; /*needs to cover the entire width of the screen*/
-	height: 55.6230589875vh; /* Header covers 10% of the screen, So for the remainder 90%, this value presents the golden ratio! (90/55.62 ~ 1.61) */
-	/* Using the following tags to crop the image so interesting parts are only shown, also using filters to make it match our color scheme */
-	object-fit: cover;
-	object-position: 10% 40%;
-	/* Came to these values using experimentation */
-
-
-
-}
-
 /* All the Signup us stuff */
 #signup{
 	width: 61.803398875%; /*Golden ratio for the 100% width* (100/61.8 ~ 1.61) equates to 704.558747175px/1140 = 61.803398875%  */
 	text-align: center;
-
 }
 
 #signup h2{
@@ -179,10 +217,6 @@ h2{
 
 
 /*All the contact us stuff*/
-#contact{
-	width: 61.803398875%; /* Same as about, golden ratio for 100% 704.558747175px/1140 = 61.803398875% */
-	padding-top: 4%; /* as this value is linked to the width and not the height of the parent, decided on the value visually */
-}
 
 #contact h2{
 	padding:1%;
@@ -234,11 +268,7 @@ h2{
 }
 
 
-/* All the about us stuff */
-#about{
-	width: 61.803398875%; /*Golden ratio for the 100% width* (100/61.8 ~ 1.61) equates to 704.558747175px/1140 = 61.803398875%  */
-	padding-top: 4%; /* as this value is linked to the width and not the height of the parent, decided on the value visually */
-}
+
 
 #about h2{
 	padding: 1%; /* as this value is linked to the width and not the height of the parent, decided on the value visually */

@@ -61,7 +61,7 @@ class Admin extends Component {
   }
   render() {
     var Login = <div id="admin-login">
-    <div className="col-3 container align-self-center">
+    <div className="col-lg-3 col-md-6 container align-self-center">
     <form onSubmit={this.handleLogin}>
     <div className="row justify-content-center">
     <h5>Admin Portal</h5>

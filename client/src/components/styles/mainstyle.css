@@ -1,5 +1,4 @@
 .sign-in{
-	padding-top: 55px;
 	margin: 0 auto;
 	background: #f8f8f8;
 }
@@ -42,7 +41,6 @@ figure {
 }
 
 .profile{
-	padding-top: 55px;
 	margin: 0 auto;
 	background: #f8f8f8;
 }
@@ -86,7 +84,7 @@ figure {
 
 @media screen and (max-width: 400px) {
 	.profile-details,.profile-reviews {
-    width: 80%;
+    width: 95%;
 	}
 	.profile-picture{
 		max-width: 100px;
@@ -233,9 +231,21 @@ h4{
 	display: block;
 	margin: 0 auto;
 	background: #f8f8f8;
-	width: 95%;
 	padding: 3%;
 	box-shadow: 0 10px 40px 0 rgba(62,57,107,.07), 0 2px 9px 0 rgba(62,57,107,.06);
+}
+
+@media (min-width:651px){
+	.restaurant-content{
+		width: 95%;
+	}
+
+	.sign-in{
+		padding-top: 55px;
+	}
+	.profile{
+		padding-top: 55px;
+	}
 }
 
 .card{
